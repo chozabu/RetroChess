@@ -30,12 +30,6 @@
 #include "VOIPPlugin.h"
 #include "interface/rsVOIP.h"
 
-#include "gui/AudioInputConfig.h"
-#include "gui/VOIPChatWidgetHolder.h"
-#include "gui/VOIPGUIHandler.h"
-#include "gui/VOIPNotify.h"
-#include "gui/SoundManager.h"
-#include "gui/chat/ChatWidget.h"
 
 #define IMAGE_VOIP ":/images/talking_on.svg"
 
@@ -84,16 +78,6 @@ VOIPPlugin::VOIPPlugin()
 	mPeers = NULL;
 	config_page = NULL ;
 	mIcon = NULL ;
-	mVOIPToasterNotify = NULL ;
-
-	mVOIPGUIHandler = new VOIPGUIHandler ;
-	mVOIPNotify = new VOIPNotify ;
-
-	QObject::connect(mVOIPNotify,SIGNAL(voipInvitationReceived(const RsPeerId&)),mVOIPGUIHandler,SLOT(ReceivedInvitation(const RsPeerId&)),Qt::QueuedConnection) ;
-	QObject::connect(mVOIPNotify,SIGNAL(voipDataReceived(const RsPeerId&)),mVOIPGUIHandler,SLOT(ReceivedVoipData(const RsPeerId&)),Qt::QueuedConnection) ;
-	QObject::connect(mVOIPNotify,SIGNAL(voipAcceptReceived(const RsPeerId&)),mVOIPGUIHandler,SLOT(ReceivedVoipAccept(const RsPeerId&)),Qt::QueuedConnection) ;
-	QObject::connect(mVOIPNotify,SIGNAL(voipHangUpReceived(const RsPeerId&)),mVOIPGUIHandler,SLOT(ReceivedVoipHangUp(const RsPeerId&)),Qt::QueuedConnection) ;
-	QObject::connect(mVOIPNotify,SIGNAL(voipBandwidthInfoReceived(const RsPeerId&,int)),mVOIPGUIHandler,SLOT(ReceivedVoipBandwidthInfo(const RsPeerId&,int)),Qt::QueuedConnection) ;
 }
 
 void VOIPPlugin::setInterfaces(RsPlugInInterfaces &interfaces)
@@ -101,13 +85,13 @@ void VOIPPlugin::setInterfaces(RsPlugInInterfaces &interfaces)
     mPeers = interfaces.mPeers;
 }
 
-ConfigPage *VOIPPlugin::qt_config_page() const
+/*ConfigPage *VOIPPlugin::qt_config_page() const
 {
 	// The config pages are deleted when config is closed, so it's important not to static the
 	// created object.
 	//
 	return new AudioInputConfig() ;
-}
+}*/
 
 QDialog *VOIPPlugin::qt_about_page() const
 {
@@ -133,7 +117,7 @@ QDialog *VOIPPlugin::qt_about_page() const
 	return about_dialog ;
 }
 
-ChatWidgetHolder *VOIPPlugin::qt_get_chat_widget_holder(ChatWidget *chatWidget) const
+/*ChatWidgetHolder *VOIPPlugin::qt_get_chat_widget_holder(ChatWidget *chatWidget) const
 {
 	switch (chatWidget->chatType()) {
 	case ChatWidget::CHATTYPE_PRIVATE:
@@ -145,7 +129,7 @@ ChatWidgetHolder *VOIPPlugin::qt_get_chat_widget_holder(ChatWidget *chatWidget) 
 	}
 
 	return NULL;
-}
+}*/
 
 p3Service *VOIPPlugin::p3_service() const
 {
@@ -204,9 +188,9 @@ void VOIPPlugin::qt_sound_events(SoundEvents &/*events*/) const
 //	events.addEvent(QApplication::translate("VOIP", "VOIP"), QApplication::translate("VOIP", "Incoming call"), VOIP_SOUND_INCOMING_CALL);
 }
 
-ToasterNotify *VOIPPlugin::qt_toasterNotify(){
+/*ToasterNotify *VOIPPlugin::qt_toasterNotify(){
 	if (!mVOIPToasterNotify) {
 		mVOIPToasterNotify = new VOIPToasterNotify(mVOIP, mVOIPNotify);
 	}
 	return mVOIPToasterNotify;
-}
+}*/

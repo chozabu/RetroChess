@@ -21,7 +21,6 @@
 #pragma once
 
 /*VOIP*/
-#include "gui/VOIPToasterNotify.h"
 #include "services/p3VOIP.h"
 
 /*libretroshare"*/
@@ -38,9 +37,9 @@ class VOIPPlugin: public RsPlugin
 
 		virtual p3Service      *p3_service() 			const	;
 		virtual uint16_t        rs_service_id()         const { return RS_SERVICE_TYPE_VOIP_PLUGIN ; }
-		virtual ConfigPage     *qt_config_page()        const ;
+		//virtual ConfigPage     *qt_config_page()        const ;
 		virtual QDialog        *qt_about_page()         const ;
-		virtual ChatWidgetHolder *qt_get_chat_widget_holder(ChatWidget *chatWidget) const ;
+		//virtual ChatWidgetHolder *qt_get_chat_widget_holder(ChatWidget *chatWidget) const ;
 		
 		virtual QIcon *qt_icon() const;
 		virtual QTranslator    *qt_translator(QApplication *app, const QString& languageCode, const QString& externalDir) const;
@@ -56,7 +55,7 @@ class VOIPPlugin: public RsPlugin
 		virtual void setInterfaces(RsPlugInInterfaces& interfaces);
 
 		//================================== RsPlugin Notify ==================================//
-		virtual ToasterNotify *qt_toasterNotify();
+		//virtual ToasterNotify *qt_toasterNotify();
 
 	private:
 		mutable p3VOIP *mVOIP ;
@@ -67,6 +66,5 @@ class VOIPPlugin: public RsPlugin
 
 		VOIPNotify *mVOIPNotify ;
 		VOIPGUIHandler *mVOIPGUIHandler ;
-		VOIPToasterNotify *mVOIPToasterNotify ;
 };
 

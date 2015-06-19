@@ -35,41 +35,14 @@ QMAKE_CXXFLAGS *= -Wall
 
 SOURCES = VOIPPlugin.cpp               \
           services/p3VOIP.cc           \
-          services/rsVOIPItems.cc      \
-          gui/AudioInputConfig.cpp     \
-          gui/AudioStats.cpp           \
-          gui/AudioWizard.cpp          \
-          gui/SpeexProcessor.cpp       \
-          gui/audiodevicehelper.cpp    \
-          gui/VideoProcessor.cpp       \
-          gui/QVideoDevice.cpp         \
-          gui/VOIPChatWidgetHolder.cpp \
-          gui/VOIPGUIHandler.cpp       \
-          gui/VOIPNotify.cpp           \
-          gui/VOIPToasterItem.cpp      \
-          gui/VOIPToasterNotify.cpp
+          services/rsVOIPItems.cc
 
 HEADERS = VOIPPlugin.h                 \
           services/p3VOIP.h            \
           services/rsVOIPItems.h       \
-          gui/AudioInputConfig.h       \
-          gui/AudioStats.h             \
-          gui/AudioWizard.h            \
-          gui/SpeexProcessor.h         \
-          gui/audiodevicehelper.h      \
-          gui/VideoProcessor.h         \
-          gui/QVideoDevice.h           \
-          gui/VOIPChatWidgetHolder.h   \
-          gui/VOIPGUIHandler.h         \
-          gui/VOIPNotify.h             \
-          gui/VOIPToasterItem.h        \
-          gui/VOIPToasterNotify.h     \
           interface/rsVOIP.h
 
-FORMS   = gui/AudioInputConfig.ui      \
-          gui/AudioStats.ui            \
-          gui/AudioWizard.ui           \
-          gui/VOIPToasterItem.ui
+#FORMS   = gui/AudioInputConfig.ui
 
 TARGET = VOIP
 

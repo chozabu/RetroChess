@@ -31,7 +31,6 @@
 
 #include "services/p3VOIP.h"
 #include "services/rsVOIPItems.h"
-#include "gui/VOIPNotify.h"
 
 #include <sys/time.h>
 
@@ -352,7 +351,7 @@ void p3VOIP::handleProtocol(RsVOIPProtocolItem *item)
 {
 	// should we keep a list of received requests?
 
-	switch(item->protocol)
+	/*switch(item->protocol)
 	{
 		case RsVOIPProtocolItem::VoipProtocol_Ring: mNotify->notifyReceivedVoipInvite(item->PeerId());
 #ifdef DEBUG_VOIP
@@ -381,7 +380,7 @@ void p3VOIP::handleProtocol(RsVOIPProtocolItem *item)
 																  std::cerr << "p3VOIP::handleProtocol(): Received protocol item # " << item->protocol << ": not handled yet ! Sorry" << std::endl;
 #endif
 																  break ;
-	}
+	}*/
 
 }
 
@@ -406,7 +405,7 @@ void p3VOIP::handleData(RsVOIPDataItem *item)
 	if(item->flags & RS_VOIP_FLAGS_VIDEO_DATA)
 		it->second.total_bytes_received += item->data_size ;
 
-	mNotify->notifyReceivedVoipData(item->PeerId());
+	//mNotify->notifyReceivedVoipData(item->PeerId());
 }
 
 bool p3VOIP::getIncomingData(const RsPeerId& peer_id,std::vector<RsVOIPDataChunk>& incoming_data_chunks)
