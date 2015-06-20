@@ -6,6 +6,7 @@
 #include <retroshare/rspeers.h>
 
 
+
 #include <QWidget>
 
 namespace Ui {
@@ -19,6 +20,9 @@ class NEMainpage : public MainPage
 public:
 	explicit NEMainpage(QWidget *parent = 0);
 	~NEMainpage();
+
+private slots:
+	void on_pingAllButton_clicked();
 
 private:
 	Ui::NEMainpage *ui;
