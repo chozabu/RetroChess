@@ -4,11 +4,16 @@
 #include "interface/rsNetExample.h"
 
 
-NEMainpage::NEMainpage(QWidget *parent) :
+NEMainpage::NEMainpage(QWidget *parent, NetExampleNotify *notify) :
 	MainPage(parent),
+	mNotify(notify),
 	ui(new Ui::NEMainpage)
 {
 	ui->setupUi(this);
+
+	connect(mNotify, SIGNAL(NeMsgArrived(RsPeerId,QString)), this , SLOT(NeMsgArrived(RsPeerId,QString)));
+	ui->listWidget->addItem("str");
+
 }
 
 NEMainpage::~NEMainpage()
@@ -18,7 +23,16 @@ NEMainpage::~NEMainpage()
 
 void NEMainpage::on_pingAllButton_clicked()
 {
-	//p3service->ping_all();
 	rsNetExample->ping_all();
 
+}
+
+
+void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
+{
+
+	std::cout << "GUI got Packet from: " << peer_id;
+	std::cout << " saying " << str.toStdString();
+	std::cout << std::endl;
+	ui->listWidget->addItem(str);
 }
