@@ -34,7 +34,8 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 	std::cout << "GUI got Packet from: " << peer_id;
 	std::cout << " saying " << str.toStdString();
 	std::cout << std::endl;
-	QString output = QString::fromStdString(peer_id.toStdString());
+
+	QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
 	output+=": ";
 	output+=str;
 	ui->listWidget->addItem(output);
