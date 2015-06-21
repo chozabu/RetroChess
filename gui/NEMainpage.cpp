@@ -24,6 +24,7 @@ NEMainpage::~NEMainpage()
 void NEMainpage::on_pingAllButton_clicked()
 {
 	rsNetExample->ping_all();
+	NeMsgArrived(rsPeers->getOwnId(),"ping");
 
 }
 
@@ -44,5 +45,6 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 void NEMainpage::on_broadcastButton_clicked()
 {
 	rsNetExample->msg_all(ui->msgInput->text().toStdString());
-
+	NeMsgArrived(rsPeers->getOwnId(),ui->msgInput->text());
+	ui->msgInput->clear();
 }
