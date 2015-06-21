@@ -26,6 +26,8 @@ private slots:
 	void on_pingAllButton_clicked();
 	void NeMsgArrived(const RsPeerId &peer_id, QString str);
 
+	void on_broadcastButton_clicked();
+
 private:
 	Ui::NEMainpage *ui;
 	NetExampleNotify *mNotify;

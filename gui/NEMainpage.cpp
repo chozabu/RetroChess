@@ -36,3 +36,9 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 	std::cout << std::endl;
 	ui->listWidget->addItem(str);
 }
+
+void NEMainpage::on_broadcastButton_clicked()
+{
+	rsNetExample->msg_all(ui->msgInput->text().toStdString());
+
+}
