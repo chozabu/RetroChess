@@ -1,24 +1,7 @@
-TODO
-====
+RS .6 Example Plugin
+==================
 
--== In RS ==-
-	* extend the notification system to plugins
-	* allow RS to accept new settings windows from plugins
-	* fix plugin version checking
-	* fix plugin hash checking
+This is somewhat based on the VOIP plugin.
 
--== VOIP Plugin ==-
-	* implement separate VOIP service, or add a new sub item to p3chatService.
-	* import plugin images
-
-COMPILATION
-	- add the following libraries:
-
-			libqtmultimediakit1
-			qtmobility-dev
-			libspeex-dev
-			libspeexdsp-dev
-			libcv-dev
-			libopencv-core-dev
-			libhighgui-dev
+Simplified to make it easier to see how things work.
 
