@@ -57,8 +57,8 @@ const uint16_t RS_SERVICE_TYPE_NetExample_PLUGIN = 0xb031;
 
 const uint8_t RS_PKT_SUBTYPE_NetExample_PING 	   = 0x01;
 const uint8_t RS_PKT_SUBTYPE_NetExample_PONG 	   = 0x02;
-const uint8_t RS_PKT_SUBTYPE_NetExample_PROTOCOL   = 0x03 ;
-													     // 0x04 is unused because of a change in the protocol
+const uint8_t RS_PKT_SUBTYPE_NetExample_PROTOCOL   = 0x03 ;//unused!
+const uint8_t RS_PKT_SUBTYPE_NetExample_PAINT	   = 0x04 ;
 const uint8_t RS_PKT_SUBTYPE_NetExample_DATA      	= 0x05 ;
 
 const uint8_t QOS_PRIORITY_RS_NetExample = 9 ;
@@ -137,6 +137,24 @@ class RsNetExampleDataItem: public RsNetExampleItem
 //		void *net_example_data ;
 //	private:
 		std::string m_msg;
+};
+
+class RsNetExamplePaintItem: public RsNetExampleItem
+{
+	public:
+		RsNetExamplePaintItem() :RsNetExampleItem(RS_PKT_SUBTYPE_NetExample_PAINT) {}
+		RsNetExamplePaintItem(void *data,uint32_t size) ;
+
+		enum { NetExampleProtocol_Ring = 1, NetExampleProtocol_Ackn = 2, NetExampleProtocol_Close = 3, NetExampleProtocol_Bandwidth = 4 } ;
+
+		virtual bool serialise(void *data,uint32_t& size) ;
+		virtual uint32_t serial_size() const ;
+
+		virtual ~RsNetExamplePaintItem() {}
+		virtual std::ostream& print(std::ostream &out, uint16_t indent = 0);
+
+		uint32_t x ;
+		uint32_t y ;
 };
 
 class RsNetExampleProtocolItem: public RsNetExampleItem

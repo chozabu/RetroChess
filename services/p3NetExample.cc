@@ -264,6 +264,34 @@ void p3NetExample::ping_all(){
 	this->sendPingMeasurements();
 }
 
+void p3NetExample::broadcast_paint(int x, int y)
+{
+	std::list< RsPeerId > onlineIds;
+	//    mServiceControl->getPeersConnected(getServiceInfo().mServiceType, onlineIds);
+	rsPeers->getOnlineList(onlineIds);
+
+	double ts = getCurrentTS();
+
+
+	std::cout << "READY TO PAINT: " << onlineIds.size() << "\n";
+	/* prepare packets */
+	std::list<RsPeerId>::iterator it;
+	for(it = onlineIds.begin(); it != onlineIds.end(); it++)
+	{
+
+		std::cout << "painting to: " << (*it).toStdString() << "\n";
+		/* create the packet */
+		RsNetExamplePaintItem *ppkt = new RsNetExamplePaintItem();
+		ppkt->x = x;
+		ppkt->y = y;
+
+		ppkt->PeerId(*it);
+
+
+		sendItem(ppkt);
+	}
+}
+
 /*int p3NetExample::sendNetExamplePing(const RsPeerId &peer_id)
 {
 	RsNetExamplePingItem *item = new RsNetExamplePingItem ;
@@ -394,6 +422,17 @@ void p3NetExample::sendPingMeasurements()
 }
 
 
+void p3NetExample::handlePaint(RsNetExamplePaintItem *item)
+{
+
+	RsStackMutex stack(mNetExampleMtx); /****** LOCKED MUTEX *******/ //unneeded?
+
+	// store the data in a queue.
+
+
+	mNotify->notifyReceivedPaint(item->PeerId(), item->x,item->y);
+}
+
 void p3NetExample::handleProtocol(RsNetExampleProtocolItem *item)
 {
 	// should we keep a list of received requests?
@@ -519,6 +558,9 @@ bool	p3NetExample::recvItem(RsItem *item)
 
 		case RS_PKT_SUBTYPE_NetExample_PROTOCOL:
 			handleProtocol(dynamic_cast<RsNetExampleProtocolItem*>(item)) ;
+			break ;
+		case RS_PKT_SUBTYPE_NetExample_PAINT:
+			handlePaint(dynamic_cast<RsNetExamplePaintItem*>(item)) ;
 			break ;
 
 		case RS_PKT_SUBTYPE_NetExample_DATA:

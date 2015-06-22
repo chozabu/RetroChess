@@ -12,7 +12,9 @@ NEMainpage::NEMainpage(QWidget *parent, NetExampleNotify *notify) :
 	ui->setupUi(this);
 
 	connect(mNotify, SIGNAL(NeMsgArrived(RsPeerId,QString)), this , SLOT(NeMsgArrived(RsPeerId,QString)));
-	ui->listWidget->addItem("str");
+	connect(mNotify, SIGNAL(NePaintArrived(RsPeerId,int,int)), this , SLOT(NePaintArrived(RsPeerId,int,int)));
+	//ui->listWidget->addItem("str");
+	connect(ui->paintWidget, SIGNAL(mmEvent(int,int)), this, SLOT(mmEvent(int,int)));
 
 }
 
@@ -21,11 +23,15 @@ NEMainpage::~NEMainpage()
 	delete ui;
 }
 
+void NEMainpage::mmEvent(int x, int y)
+{
+	rsNetExample->broadcast_paint(x,y);
+}
+
 void NEMainpage::on_pingAllButton_clicked()
 {
 	rsNetExample->ping_all();
 	NeMsgArrived(rsPeers->getOwnId(),"ping");
-
 }
 
 
@@ -40,6 +46,14 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 	output+=": ";
 	output+=str;
 	ui->listWidget->addItem(output);
+}
+void NEMainpage::NePaintArrived(const RsPeerId &peer_id, int x, int y)
+{
+
+	std::cout << "GUI got Paint from: " << peer_id;
+	std::cout << std::endl;
+
+	ui->paintWidget->paintAt(x,y);
 }
 
 void NEMainpage::on_broadcastButton_clicked()

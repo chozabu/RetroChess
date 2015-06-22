@@ -37,14 +37,16 @@ SOURCES = NetExamplePlugin.cpp               \
           services/p3NetExample.cc           \
           services/rsNetExampleItems.cc \
     gui/NEMainpage.cpp \
-    gui/NetExampleNotify.cpp
+    gui/NetExampleNotify.cpp \
+    gui/paintwidget.cpp
 
 HEADERS = NetExamplePlugin.h                 \
           services/p3NetExample.h            \
           services/rsNetExampleItems.h       \
           interface/rsNetExample.h \
     gui/NEMainpage.h \
-    gui/NetExampleNotify.h
+    gui/NetExampleNotify.h \
+    gui/paintwidget.h
 
 #FORMS   = gui/AudioInputConfig.ui
 

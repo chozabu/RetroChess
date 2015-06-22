@@ -37,10 +37,12 @@ class NetExampleNotify : public QObject
 	Q_OBJECT
 public:
 	explicit NetExampleNotify(QObject *parent = 0);
+	void notifyReceivedPaint(const RsPeerId &peer_id, int x, int y) ;
 	void notifyReceivedMsg(const RsPeerId &peer_id, QString str) ;
 
 signals:
-	void NeMsgArrived(const RsPeerId &peer_id, QString str) ; // emitted when the peer accepts the call
+	void NeMsgArrived(const RsPeerId &peer_id, QString str) ; // emitted when the peer gets a msg
+	void NePaintArrived(const RsPeerId &peer_id, int x, int y) ;
 
 public slots:
 };

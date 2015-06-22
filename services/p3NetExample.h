@@ -116,6 +116,8 @@ class p3NetExample: public RsPQIService, public RsNetExample
 		virtual RsServiceInfo getServiceInfo() ;
 
 		void 	ping_all();
+
+		void broadcast_paint(int x, int y);
 		void 	msg_all(std::string msg);
 	private:
 		int   sendPackets();
@@ -131,6 +133,7 @@ class p3NetExample: public RsPQIService, public RsNetExample
 		int 	storePongResult(const RsPeerId& id, uint32_t counter, double ts, double rtt, double offset);
 
 		void handleProtocol(RsNetExampleProtocolItem*) ;
+		void handlePaint(RsNetExamplePaintItem *item);
 		void handleData(RsNetExampleDataItem*) ;
 
 		RsMutex mNetExampleMtx;

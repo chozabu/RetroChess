@@ -66,6 +66,7 @@ class RsNetExample
 		virtual int sendNetExampleAcceptCall(const RsPeerId& peer_id) = 0;
 
 	virtual void ping_all() = 0;
+	virtual void broadcast_paint(int x, int y) = 0;
 	virtual void msg_all(std::string msg) = 0;
 		// Sending data. The client keeps the memory ownership and must delete it after calling this.
 		virtual int sendNetExampleData(const RsPeerId& peer_id,const RsNetExampleDataChunk& chunk) = 0;

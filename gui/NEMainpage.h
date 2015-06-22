@@ -23,11 +23,13 @@ public:
 	~NEMainpage();
 
 private slots:
+	void mmEvent(int x, int y);
 	void on_pingAllButton_clicked();
 	void NeMsgArrived(const RsPeerId &peer_id, QString str);
 
 	void on_broadcastButton_clicked();
 
+	void NePaintArrived(const RsPeerId &peer_id, int x, int y);
 private:
 	Ui::NEMainpage *ui;
 	NetExampleNotify *mNotify;

@@ -77,6 +77,19 @@ std::ostream& RsNetExampleProtocolItem::print(std::ostream &out, uint16_t indent
 	printRsItemEnd(out, "RsNetExampleProtocolItem", indent);
 	return out;
 }
+std::ostream& RsNetExamplePaintItem::print(std::ostream &out, uint16_t indent)
+{
+	printRsItemBase(out, "RsNetExamplePaintItem", indent);
+	uint16_t int_Indent = indent + 2;
+	printIndent(out, int_Indent);
+	out << "x: " << x << std::endl;
+
+	printIndent(out, int_Indent);
+	out << "y: " << y << std::endl;
+
+	printRsItemEnd(out, "RsNetExamplePaintItem", indent);
+	return out;
+}
 std::ostream& RsNetExampleDataItem::print(std::ostream &out, uint16_t indent)
 {
 	printRsItemBase(out, "RsNetExampleDataItem", indent);
@@ -107,6 +120,14 @@ uint32_t RsNetExampleProtocolItem::serial_size() const
 	uint32_t s = 8; /* header */
 	s += 4; /* flags */
 	s += 4; /* protocol */
+
+	return s;
+}
+uint32_t RsNetExamplePaintItem::serial_size() const
+{
+	uint32_t s = 8; /* header */
+	s += 4; /* x */
+	s += 4; /* y */
 
 	return s;
 }
@@ -143,6 +164,40 @@ bool RsNetExampleProtocolItem::serialise(void *data, uint32_t& pktsize)
 	/* add mandatory parts first */
 	ok &= setRawUInt32(data, tlvsize, &offset, protocol);
 	ok &= setRawUInt32(data, tlvsize, &offset, flags);
+
+	if (offset != tlvsize)
+	{
+		ok = false;
+		std::cerr << "RsNetExampleSerialiser::serialiseNetExamplePingItem() Size Error! " << std::endl;
+	}
+
+	return ok;
+}
+bool RsNetExamplePaintItem::serialise(void *data, uint32_t& pktsize)
+{
+	uint32_t tlvsize = serial_size() ;
+	uint32_t offset = 0;
+
+	if (pktsize < tlvsize)
+		return false; /* not enough space */
+
+	pktsize = tlvsize;
+
+	bool ok = true;
+
+	ok &= setRsItemHeader(data, tlvsize, PacketId(), tlvsize);
+
+#ifdef RSSERIAL_DEBUG
+	std::cerr << "RsNetExampleSerialiser::serialiseNetExampleDataItem() Header: " << ok << std::endl;
+	std::cerr << "RsNetExampleSerialiser::serialiseNetExampleDataItem() Size: " << tlvsize << std::endl;
+#endif
+
+	/* skip the header */
+	offset += 8;
+
+	/* add mandatory parts first */
+	ok &= setRawUInt32(data, tlvsize, &offset, x);
+	ok &= setRawUInt32(data, tlvsize, &offset, y);
 
 	if (offset != tlvsize)
 	{
@@ -256,6 +311,36 @@ RsNetExampleProtocolItem::RsNetExampleProtocolItem(void *data, uint32_t pktsize)
 	/* get mandatory parts first */
 	ok &= getRawUInt32(data, rssize, &offset, &protocol);
 	ok &= getRawUInt32(data, rssize, &offset, &flags);
+
+	if (offset != rssize)
+		throw std::runtime_error("Deserialisation error!") ;
+
+	if (!ok)
+		throw std::runtime_error("Deserialisation error!") ;
+}
+RsNetExamplePaintItem::RsNetExamplePaintItem(void *data, uint32_t pktsize)
+	: RsNetExampleItem(RS_PKT_SUBTYPE_NetExample_PAINT)
+{
+	/* get the type and size */
+	uint32_t rstype = getRsItemId(data);
+	uint32_t rssize = getRsItemSize(data);
+
+	uint32_t offset = 0;
+
+	if ((RS_PKT_VERSION_SERVICE != getRsItemVersion(rstype)) || (RS_SERVICE_TYPE_NetExample_PLUGIN != getRsItemService(rstype)) || (RS_PKT_SUBTYPE_NetExample_PAINT != getRsItemSubType(rstype)))
+		throw std::runtime_error("Wrong packet type!") ;
+
+	if (pktsize < rssize)    /* check size */
+		throw std::runtime_error("Not enough size!") ;
+
+	bool ok = true;
+
+	/* skip the header */
+	offset += 8;
+
+	/* get mandatory parts first */
+	ok &= getRawUInt32(data, rssize, &offset, &x);
+	ok &= getRawUInt32(data, rssize, &offset, &y);
 
 	if (offset != rssize)
 		throw std::runtime_error("Deserialisation error!") ;
@@ -435,6 +520,7 @@ RsItem* RsNetExampleSerialiser::deserialise(void *data, uint32_t *pktsize)
 			case RS_PKT_SUBTYPE_NetExample_PING: 		return new RsNetExamplePingItem(data, *pktsize);
 			case RS_PKT_SUBTYPE_NetExample_PONG: 		return new RsNetExamplePongItem(data, *pktsize);
 			case RS_PKT_SUBTYPE_NetExample_PROTOCOL: 	return new RsNetExampleProtocolItem(data, *pktsize);
+			case RS_PKT_SUBTYPE_NetExample_PAINT:		return new RsNetExamplePaintItem(data, *pktsize);
 			case RS_PKT_SUBTYPE_NetExample_DATA: 		return new RsNetExampleDataItem(data, *pktsize);
 
 			default:

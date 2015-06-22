@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>685</width>
+    <height>632</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,7 +59,25 @@
     </rect>
    </property>
   </widget>
+  <widget class="PaintWidget" name="paintWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>19</x>
+     <y>319</y>
+     <width>571</width>
+     <height>271</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PaintWidget</class>
+   <extends>QWidget</extends>
+   <header>gui/paintwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
