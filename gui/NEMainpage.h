@@ -1,3 +1,4 @@
+/* This is the main page displayed by the plugin */
 #ifndef NEMAINPAGE_H
 #define NEMAINPAGE_H
 

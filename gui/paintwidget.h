@@ -1,3 +1,4 @@
+/* this is just a local widget that can be drawn on */
 #ifndef PAINTWIDGET_H
 #define PAINTWIDGET_H
 

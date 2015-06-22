@@ -1,3 +1,4 @@
+/* this is the central part of the plugin */
 /****************************************************************
  *  RetroShare is distributed under the following license:
  *

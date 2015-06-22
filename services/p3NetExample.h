@@ -1,3 +1,4 @@
+/* this handles the networking service of this plugin */
 /****************************************************************
  *  RetroShare is distributed under the following license:
  *

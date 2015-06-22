@@ -1,3 +1,4 @@
+/* this is a simple class to make it easy for any part of the plugin to call its services */
 /****************************************************************
  *  RetroShare is distributed under the following license:
  *

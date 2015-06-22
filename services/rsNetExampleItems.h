@@ -1,3 +1,4 @@
+/* this describes the datatypes sent over the network, and how to (de)serialise them */
 /****************************************************************
  *  RetroShare is distributed under the following license:
  *
