@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <iostream>
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QClipboard>
 PaintWidget::PaintWidget(QWidget *parent) :
     QWidget(parent),image(600,300,QImage::Format_RGB32),color(Qt::black),penWidth(8)
