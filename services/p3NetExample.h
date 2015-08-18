@@ -86,7 +86,8 @@ class p3NetExample: public RsPQIService, public RsNetExample
 
 		void broadcast_paint(int x, int y);
 		void 	msg_all(std::string msg);
-	private:
+		void str_msg_peer(RsPeerId peerID, QString strdata);
+private:
 
 		void 	qvm_msg_peer(RsPeerId peerID, QVariantMap data);
 

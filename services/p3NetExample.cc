@@ -124,15 +124,19 @@ int	p3NetExample::status()
 	return 1;
 }
 #include<qjsondocument.h>
+void p3NetExample::str_msg_peer(RsPeerId peerID, QString strdata){
+	QVariantMap map;
+	map.insert("type", "chat");
+	map.insert("message", strdata);
+
+	qvm_msg_peer(peerID,map);
+}
+
 void p3NetExample::qvm_msg_peer(RsPeerId peerID, QVariantMap data){
 	QJsonDocument jsondoc = QJsonDocument::fromVariant(data);
-	std::string msg = jsondoc.toBinaryData().toStdString();
-#ifdef DEBUG_NetExample
-		std::cerr << "p3NetExample::msg_all() MSging: " << peerID;
-		std::cerr << std::endl;
-#endif
-
-		std::cout << "MSging: " << peerID.toStdString() << "\n";
+	std::string msg = jsondoc.toJson().toStdString();
+	std::cout << "MSging: " << peerID.toStdString() << "\n";
+	std::cout << "MSging: " << msg << "\n";
 		/* create the packet */
 		RsNetExampleDataItem *pingPkt = new RsNetExampleDataItem();
 		pingPkt->PeerId(peerID);
@@ -174,33 +178,8 @@ void p3NetExample::msg_all(std::string msg){
 	std::list<RsPeerId>::iterator it;
 	for(it = onlineIds.begin(); it != onlineIds.end(); it++)
 	{
-#ifdef DEBUG_NetExample
-		std::cerr << "p3NetExample::msg_all() MSging: " << *it;
-		std::cerr << std::endl;
-#endif
-
-		std::cout << "MSging: " << (*it).toStdString() << "\n";
-		/* create the packet */
-		RsNetExampleDataItem *pingPkt = new RsNetExampleDataItem();
-		pingPkt->PeerId(*it);
-		pingPkt->m_msg = msg;
-		pingPkt->data_size = msg.size();
-		//pingPkt->mSeqNo = mCounter;
-		//pingPkt->mPingTS = convertTsTo64bits(ts);
-
-		//storePingAttempt(*it, ts, mCounter);
-
-#ifdef DEBUG_NetExample
-		std::cerr << "p3NetExample::msg_all() With Packet:";
-		std::cerr << std::endl;
-		pingPkt->print(std::cerr, 10);
-#endif
-
-		sendItem(pingPkt);
+		str_msg_peer(RsPeerId(*it),QString::fromStdString(msg));
 	}
-
-	//RsStackMutex stack(mNetExampleMtx); /****** LOCKED MUTEX *******/
-	//mCounter++;
 }
 
 void p3NetExample::ping_all(){
@@ -223,6 +202,12 @@ void p3NetExample::broadcast_paint(int x, int y)
 	{
 
 		std::cout << "painting to: " << (*it).toStdString() << "\n";
+		QVariantMap map;
+		map.insert("type", "paint");
+		map.insert("x", x);
+		map.insert("y", y);
+
+		qvm_msg_peer(RsPeerId(*it),map);
 		/* create the packet */
 		//TODO send paint packets
 	}
@@ -244,6 +229,7 @@ void p3NetExample::handleData(RsNetExampleDataItem *item)
 
 bool	p3NetExample::recvItem(RsItem *item)
 {
+	std::cout << "recvItem type: " << item->PacketSubType() << "\n";
 	/* pass to specific handler */
 	bool keep = false ;
 
