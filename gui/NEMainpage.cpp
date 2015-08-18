@@ -2,6 +2,7 @@
 #include "ui_NEMainpage.h"
 //#include "services/p3NetExample.h"
 #include "interface/rsNetExample.h"
+#include<qjsondocument.h>
 
 
 NEMainpage::NEMainpage(QWidget *parent, NetExampleNotify *notify) :
@@ -37,15 +38,34 @@ void NEMainpage::on_pingAllButton_clicked()
 
 void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 {
-
+	QJsonDocument jdoc = QJsonDocument::fromJson(str.toUtf8());
+	QVariantMap vmap = jdoc.toVariant().toMap();
 	std::cout << "GUI got Packet from: " << peer_id;
 	std::cout << " saying " << str.toStdString();
 	std::cout << std::endl;
+	QString type = vmap.value("type").toString();
+	if (type == "chat"){
+		QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
+		output+=": ";
+		output+=vmap.value("message").toString();
+		ui->listWidget->addItem(output);
+	}else if (type == "paint"){
+		int x =vmap.value("x").toInt();
+		int y =vmap.value("y").toInt();
+		NePaintArrived(peer_id,x,y);
+	}else{
+		QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
+		output+=": ";
+		output+=str;
+		ui->listWidget->addItem(output);
+	}
 
-	QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
-	output+=": ";
-	output+=str;
-	ui->listWidget->addItem(output);
+	{
+		QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
+		output+=": ";
+		output+=str;
+		ui->netLogWidget->addItem(output);
+	}
 }
 void NEMainpage::NePaintArrived(const RsPeerId &peer_id, int x, int y)
 {

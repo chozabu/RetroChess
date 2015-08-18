@@ -69,6 +69,16 @@
     </rect>
    </property>
   </widget>
+  <widget class="QListWidget" name="netLogWidget">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>0</y>
+     <width>291</width>
+     <height>241</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
