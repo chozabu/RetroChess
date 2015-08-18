@@ -135,6 +135,9 @@ void p3NetExample::str_msg_peer(RsPeerId peerID, QString strdata){
 void p3NetExample::qvm_msg_peer(RsPeerId peerID, QVariantMap data){
 	QJsonDocument jsondoc = QJsonDocument::fromVariant(data);
 	std::string msg = jsondoc.toJson().toStdString();
+	raw_msg_peer(peerID, msg);
+}
+void p3NetExample::raw_msg_peer(RsPeerId peerID, std::string msg){
 	std::cout << "MSging: " << peerID.toStdString() << "\n";
 	std::cout << "MSging: " << msg << "\n";
 		/* create the packet */
