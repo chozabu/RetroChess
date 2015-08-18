@@ -5,9 +5,9 @@
 #include <retroshare-gui/mainpage.h>
 #include <retroshare/rsfiles.h>
 #include <retroshare/rspeers.h>
-#include "gui/NetExampleNotify.h"
+#include "gui/RetroChessNotify.h"
 
-
+#include "gui/chess.h"
 
 #include <QWidget>
 
@@ -20,7 +20,7 @@ class NEMainpage : public MainPage
 	Q_OBJECT
 
 public:
-	explicit NEMainpage(QWidget *parent, NetExampleNotify *notify);
+	explicit NEMainpage(QWidget *parent, RetroChessNotify *notify);
 	~NEMainpage();
 
 private slots:
@@ -33,7 +33,7 @@ private slots:
 	void NePaintArrived(const RsPeerId &peer_id, int x, int y);
 private:
 	Ui::NEMainpage *ui;
-	NetExampleNotify *mNotify;
+	RetroChessNotify *mNotify;
 };
 
 #endif // NEMAINPAGE_H

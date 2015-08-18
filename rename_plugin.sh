@@ -1,6 +1,6 @@
 #!/bin/bash
 newname=$1
-oldname="NetExample"
+oldname="RetroChess"
 echo "$newname"
 echo "$oldname"
 find . -not -path '*/\.*' -type f -print0 | xargs -0 sed -i "s/$oldname/$newname/g"

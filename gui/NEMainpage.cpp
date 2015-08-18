@@ -1,11 +1,11 @@
 #include "NEMainpage.h"
 #include "ui_NEMainpage.h"
-//#include "services/p3NetExample.h"
-#include "interface/rsNetExample.h"
+//#include "services/p3RetroChess.h"
+#include "interface/rsRetroChess.h"
 #include<qjsondocument.h>
 
 
-NEMainpage::NEMainpage(QWidget *parent, NetExampleNotify *notify) :
+NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
 	MainPage(parent),
 	mNotify(notify),
 	ui(new Ui::NEMainpage)
@@ -16,6 +16,7 @@ NEMainpage::NEMainpage(QWidget *parent, NetExampleNotify *notify) :
 	connect(mNotify, SIGNAL(NePaintArrived(RsPeerId,int,int)), this , SLOT(NePaintArrived(RsPeerId,int,int)));
 	//ui->listWidget->addItem("str");
 	connect(ui->paintWidget, SIGNAL(mmEvent(int,int)), this, SLOT(mmEvent(int,int)));
+	make_board();
 
 }
 
@@ -26,12 +27,12 @@ NEMainpage::~NEMainpage()
 
 void NEMainpage::mmEvent(int x, int y)
 {
-	rsNetExample->broadcast_paint(x,y);
+	rsRetroChess->broadcast_paint(x,y);
 }
 
 void NEMainpage::on_pingAllButton_clicked()
 {
-	rsNetExample->ping_all();
+	rsRetroChess->ping_all();
 	NeMsgArrived(rsPeers->getOwnId(),"ping");
 }
 
@@ -78,7 +79,7 @@ void NEMainpage::NePaintArrived(const RsPeerId &peer_id, int x, int y)
 
 void NEMainpage::on_broadcastButton_clicked()
 {
-	rsNetExample->msg_all(ui->msgInput->text().toStdString());
+	rsRetroChess->msg_all(ui->msgInput->text().toStdString());
 	NeMsgArrived(rsPeers->getOwnId(),ui->msgInput->text());
 	ui->msgInput->clear();
 }

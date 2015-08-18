@@ -26,15 +26,15 @@
 #include <string>
 #include <QVariantMap>
 
-#include "services/rsNetExampleItems.h"
+#include "services/rsRetroChessItems.h"
 #include "services/p3service.h"
 #include "serialiser/rstlvbase.h"
 #include "serialiser/rsconfigitems.h"
 #include "plugins/rspqiservice.h"
-#include <interface/rsNetExample.h>
+#include <interface/rsRetroChess.h>
 
 class p3LinkMgr;
-class NetExampleNotify ;
+class RetroChessNotify ;
 
 
 
@@ -44,14 +44,14 @@ class NetExampleNotify ;
   * This is only used to test Latency for the moment.
   */
 
-class p3NetExample: public RsPQIService, public RsNetExample
+class p3RetroChess: public RsPQIService, public RsRetroChess
 // Maybe we inherit from these later - but not needed for now.
 //, public p3Config, public pqiMonitor
 {
 	public:
-		p3NetExample(RsPluginHandler *cm,NetExampleNotify *);
+		p3RetroChess(RsPluginHandler *cm,RetroChessNotify *);
 
-		/***** overloaded from rsNetExample *****/
+		/***** overloaded from rsRetroChess *****/
 
 
 		/***** overloaded from p3Service *****/
@@ -78,7 +78,7 @@ class p3NetExample: public RsPQIService, public RsNetExample
 		 */
 		virtual bool saveList(bool& cleanup, std::list<RsItem*>&) ;
 		virtual bool loadList(std::list<RsItem*>& load) ;
-		virtual std::string configurationFileName() const { return "NetExample.cfg" ; }
+		virtual std::string configurationFileName() const { return "RetroChess.cfg" ; }
 
 		virtual RsServiceInfo getServiceInfo() ;
 
@@ -93,9 +93,9 @@ private:
 
 
 
-		void handleData(RsNetExampleDataItem*) ;
+		void handleData(RsRetroChessDataItem*) ;
 
-		RsMutex mNetExampleMtx;
+		RsMutex mRetroChessMtx;
 
 
 		static RsTlvKeyValue push_int_value(const std::string& key,int value) ;
@@ -103,6 +103,6 @@ private:
 
 
 		RsServiceControl *mServiceControl;
-		NetExampleNotify *mNotify ;
+		RetroChessNotify *mNotify ;
 
 };

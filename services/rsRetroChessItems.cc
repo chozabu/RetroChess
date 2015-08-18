@@ -23,7 +23,7 @@
 #include "serialiser/rsbaseserial.h"
 #include "serialiser/rstlvbase.h"
 
-#include "services/rsNetExampleItems.h"
+#include "services/rsRetroChessItems.h"
 
 /***
 #define RSSERIAL_DEBUG 1
@@ -34,9 +34,9 @@
 #define HOLLERITH_LEN_SPEC 4
 /*************************************************************************/
 
-std::ostream& RsNetExampleDataItem::print(std::ostream &out, uint16_t indent)
+std::ostream& RsRetroChessDataItem::print(std::ostream &out, uint16_t indent)
 {
-	printRsItemBase(out, "RsNetExampleDataItem", indent);
+	printRsItemBase(out, "RsRetroChessDataItem", indent);
 	uint16_t int_Indent = indent + 2;
 	printIndent(out, int_Indent);
 	out << "flags: " << flags << std::endl;
@@ -44,12 +44,12 @@ std::ostream& RsNetExampleDataItem::print(std::ostream &out, uint16_t indent)
 	printIndent(out, int_Indent);
 	out << "data size: " << std::hex << data_size << std::dec << std::endl;
 
-	printRsItemEnd(out, "RsNetExampleDataItem", indent);
+	printRsItemEnd(out, "RsRetroChessDataItem", indent);
 	return out;
 }
 
 /*************************************************************************/
-uint32_t RsNetExampleDataItem::serial_size() const
+uint32_t RsRetroChessDataItem::serial_size() const
 {
 	uint32_t s = 8; /* header */
 	s += 4; /* flags */
@@ -61,7 +61,7 @@ uint32_t RsNetExampleDataItem::serial_size() const
 }
 
 /* serialise the data to the buffer */
-bool RsNetExampleDataItem::serialise(void *data, uint32_t& pktsize)
+bool RsRetroChessDataItem::serialise(void *data, uint32_t& pktsize)
 {
 	uint32_t tlvsize = serial_size() ;
 	uint32_t offset = 0;
@@ -76,8 +76,8 @@ bool RsNetExampleDataItem::serialise(void *data, uint32_t& pktsize)
 	ok &= setRsItemHeader(data, tlvsize, PacketId(), tlvsize);
 
 #ifdef RSSERIAL_DEBUG
-	std::cerr << "RsNetExampleSerialiser::serialiseNetExampleDataItem() Header: " << ok << std::endl;
-	std::cerr << "RsNetExampleSerialiser::serialiseNetExampleDataItem() Size: " << tlvsize << std::endl;
+	std::cerr << "RsRetroChessSerialiser::serialiseRetroChessDataItem() Header: " << ok << std::endl;
+	std::cerr << "RsRetroChessSerialiser::serialiseRetroChessDataItem() Size: " << tlvsize << std::endl;
 #endif
 
 	/* skip the header */
@@ -94,7 +94,7 @@ bool RsNetExampleDataItem::serialise(void *data, uint32_t& pktsize)
 	if (offset != tlvsize)
 	{
 		ok = false;
-		std::cerr << "RsNetExampleSerialiser::serialiseNetExamplePingItem() Size Error! " << std::endl;
+		std::cerr << "RsRetroChessSerialiser::serialiseRetroChessPingItem() Size Error! " << std::endl;
 		std::cerr << "expected " << tlvsize << " got " << offset << std::endl;
 		std::cerr << "m_msg looks like " << m_msg << std::endl;
 	}
@@ -106,8 +106,8 @@ bool RsNetExampleDataItem::serialise(void *data, uint32_t& pktsize)
 /*************************************************************************/
 /*************************************************************************/
 
-RsNetExampleDataItem::RsNetExampleDataItem(void *data, uint32_t pktsize)
-	: RsNetExampleItem(RS_PKT_SUBTYPE_NetExample_DATA)
+RsRetroChessDataItem::RsRetroChessDataItem(void *data, uint32_t pktsize)
+	: RsRetroChessItem(RS_PKT_SUBTYPE_RetroChess_DATA)
 {
 	/* get the type and size */
 	uint32_t rstype = getRsItemId(data);
@@ -115,7 +115,7 @@ RsNetExampleDataItem::RsNetExampleDataItem(void *data, uint32_t pktsize)
 
 	uint32_t offset = 0;
 
-	if ((RS_PKT_VERSION_SERVICE != getRsItemVersion(rstype)) || (RS_SERVICE_TYPE_NetExample_PLUGIN != getRsItemService(rstype)) || (RS_PKT_SUBTYPE_NetExample_DATA != getRsItemSubType(rstype)))
+	if ((RS_PKT_VERSION_SERVICE != getRsItemVersion(rstype)) || (RS_SERVICE_TYPE_RetroChess_PLUGIN != getRsItemService(rstype)) || (RS_PKT_SUBTYPE_RetroChess_DATA != getRsItemSubType(rstype)))
 		throw std::runtime_error("Wrong packet subtype") ;
 
 	if (pktsize < rssize)    /* check size */
@@ -141,23 +141,23 @@ RsNetExampleDataItem::RsNetExampleDataItem(void *data, uint32_t pktsize)
 }
 /*************************************************************************/
 
-RsItem* RsNetExampleSerialiser::deserialise(void *data, uint32_t *pktsize)
+RsItem* RsRetroChessSerialiser::deserialise(void *data, uint32_t *pktsize)
 {
 #ifdef RSSERIAL_DEBUG
-	std::cerr << "RsNetExampleSerialiser::deserialise()" << std::endl;
+	std::cerr << "RsRetroChessSerialiser::deserialise()" << std::endl;
 #endif
 
 	/* get the type and size */
 	uint32_t rstype = getRsItemId(data);
 
-	if ((RS_PKT_VERSION_SERVICE != getRsItemVersion(rstype)) || (RS_SERVICE_TYPE_NetExample_PLUGIN != getRsItemService(rstype)))
+	if ((RS_PKT_VERSION_SERVICE != getRsItemVersion(rstype)) || (RS_SERVICE_TYPE_RetroChess_PLUGIN != getRsItemService(rstype)))
 		return NULL ;
 	
 	try
 	{
 		switch(getRsItemSubType(rstype))
 		{
-			case RS_PKT_SUBTYPE_NetExample_DATA: 		return new RsNetExampleDataItem(data, *pktsize);
+			case RS_PKT_SUBTYPE_RetroChess_DATA: 		return new RsRetroChessDataItem(data, *pktsize);
 
 			default:
 				return NULL;
@@ -165,7 +165,7 @@ RsItem* RsNetExampleSerialiser::deserialise(void *data, uint32_t *pktsize)
 	}
 	catch(std::exception& e)
 	{
-		std::cerr << "RsNetExampleSerialiser: deserialization error: " << e.what() << std::endl;
+		std::cerr << "RsRetroChessSerialiser: deserialization error: " << e.what() << std::endl;
 		return NULL;
 	}
 }

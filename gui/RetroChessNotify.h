@@ -1,4 +1,3 @@
-/* this is a simple class to make it easy for any part of the plugin to call its services */
 /****************************************************************
  *  RetroShare is distributed under the following license:
  *
@@ -20,29 +19,32 @@
  *  Boston, MA  02110-1301, USA.
  ****************************************************************/
 
-// interface class for p3NetExample service
+// This class is a Qt object to get notification from the plugin's service threads,
+// and responsible to pass the info the the GUI part.
 //
+// Because the GUI part is async-ed with the service, it is crucial to use the
+// QObject connect system to communicate between the p3Service and the gui part (handled by Qt)
+//
+#ifndef NETEXAMPLENOTIFY_H
+#define NETEXAMPLENOTIFY_H
 
-#pragma once
-
-#include <stdint.h>
-#include <string>
-#include <list>
-#include <vector>
 #include <retroshare/rstypes.h>
 
-class RsNetExample ;
-extern RsNetExample *rsNetExample;
- 
-static const uint32_t CONFIG_TYPE_NetExample_PLUGIN 		= 0xe001 ;
+#include <QObject>
 
-class RsNetExample
+class RetroChessNotify : public QObject
 {
-	public:
+	Q_OBJECT
+public:
+	explicit RetroChessNotify(QObject *parent = 0);
+	void notifyReceivedPaint(const RsPeerId &peer_id, int x, int y) ;
+	void notifyReceivedMsg(const RsPeerId &peer_id, QString str) ;
 
-	virtual void ping_all() = 0;
-	virtual void broadcast_paint(int x, int y) = 0;
-	virtual void msg_all(std::string msg) = 0;
+signals:
+	void NeMsgArrived(const RsPeerId &peer_id, QString str) ; // emitted when the peer gets a msg
+	void NePaintArrived(const RsPeerId &peer_id, int x, int y) ;
+
+public slots:
 };
 
-
+#endif // NETEXAMPLENOTIFY_H

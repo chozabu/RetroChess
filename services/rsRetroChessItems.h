@@ -23,7 +23,7 @@
 #pragma once
 
 /*
- * libretroshare/src/serialiser: rsNetExampleItems.h
+ * libretroshare/src/serialiser: rsRetroChessItems.h
  *
  * RetroShare Serialiser.
  *
@@ -54,23 +54,23 @@
 
 /**************************************************************************/
 
-const uint16_t RS_SERVICE_TYPE_NetExample_PLUGIN = 0xb00b5;
+const uint16_t RS_SERVICE_TYPE_RetroChess_PLUGIN = 0xc4e55;
 
-const uint8_t RS_PKT_SUBTYPE_NetExample_DATA 	   = 0x01;
+const uint8_t RS_PKT_SUBTYPE_RetroChess_DATA 	   = 0x01;
 
-const uint8_t QOS_PRIORITY_RS_NetExample = 9 ;
+const uint8_t QOS_PRIORITY_RS_RetroChess = 9 ;
 
 
-class RsNetExampleItem: public RsItem
+class RsRetroChessItem: public RsItem
 {
 	public:
-		RsNetExampleItem(uint8_t NetExample_subtype)
-			: RsItem(RS_PKT_VERSION_SERVICE,RS_SERVICE_TYPE_NetExample_PLUGIN,NetExample_subtype)
+		RsRetroChessItem(uint8_t RetroChess_subtype)
+			: RsItem(RS_PKT_VERSION_SERVICE,RS_SERVICE_TYPE_RetroChess_PLUGIN,RetroChess_subtype)
 		{ 
-			setPriorityLevel(QOS_PRIORITY_RS_NetExample) ;
+			setPriorityLevel(QOS_PRIORITY_RS_RetroChess) ;
 		}	
 
-		virtual ~RsNetExampleItem() {};
+		virtual ~RsRetroChessItem() {};
 		virtual void clear() {};
 		virtual std::ostream& print(std::ostream &out, uint16_t indent = 0) = 0 ;
 
@@ -79,16 +79,16 @@ class RsNetExampleItem: public RsItem
 };
 
 
-class RsNetExampleDataItem: public RsNetExampleItem
+class RsRetroChessDataItem: public RsRetroChessItem
 {
 	public:
-		RsNetExampleDataItem() :RsNetExampleItem(RS_PKT_SUBTYPE_NetExample_DATA) {}
-		RsNetExampleDataItem(void *data,uint32_t size) ; // de-serialization
+		RsRetroChessDataItem() :RsRetroChessItem(RS_PKT_SUBTYPE_RetroChess_DATA) {}
+		RsRetroChessDataItem(void *data,uint32_t size) ; // de-serialization
 
 		virtual bool serialise(void *data,uint32_t& size) ;
 		virtual uint32_t serial_size() const ; 							
 
-		virtual ~RsNetExampleDataItem()
+		virtual ~RsRetroChessDataItem()
 		{
 		}
 		virtual std::ostream& print(std::ostream &out, uint16_t indent = 0);
@@ -99,23 +99,23 @@ class RsNetExampleDataItem: public RsNetExampleItem
 };
 
 
-class RsNetExampleSerialiser: public RsSerialType
+class RsRetroChessSerialiser: public RsSerialType
 {
 	public:
-		RsNetExampleSerialiser()
-			:RsSerialType(RS_PKT_VERSION_SERVICE, RS_SERVICE_TYPE_NetExample_PLUGIN)
+		RsRetroChessSerialiser()
+			:RsSerialType(RS_PKT_VERSION_SERVICE, RS_SERVICE_TYPE_RetroChess_PLUGIN)
 		{ 
 		}
-		virtual ~RsNetExampleSerialiser() {}
+		virtual ~RsRetroChessSerialiser() {}
 
 		virtual uint32_t 	size (RsItem *item) 
 		{ 
-			return dynamic_cast<RsNetExampleItem *>(item)->serial_size() ;
+			return dynamic_cast<RsRetroChessItem *>(item)->serial_size() ;
 		}
 
 		virtual	bool serialise  (RsItem *item, void *data, uint32_t *size)
 		{ 
-			return dynamic_cast<RsNetExampleItem *>(item)->serialise(data,*size) ;
+			return dynamic_cast<RsRetroChessItem *>(item)->serialise(data,*size) ;
 		}
 		virtual	RsItem *deserialise(void *data, uint32_t *size);
 };

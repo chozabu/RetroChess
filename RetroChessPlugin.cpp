@@ -27,15 +27,15 @@
 #include <QIcon>
 #include <QMessageBox>
 
-#include "NetExamplePlugin.h"
-#include "interface/rsNetExample.h"
+#include "RetroChessPlugin.h"
+#include "interface/rsRetroChess.h"
 #include "gui/NEMainpage.h"
-#include "gui/NetExampleNotify.h"
+#include "gui/RetroChessNotify.h"
 
 
-#define IMAGE_NetExample ":/images/talking_on.svg"
+#define IMAGE_RetroChess ":/images/talking_on.svg"
 
-static void *inited = new NetExamplePlugin() ;
+static void *inited = new RetroChessPlugin() ;
 
 extern "C" {
 
@@ -46,7 +46,7 @@ extern "C" {
 	//
 	void *RETROSHARE_PLUGIN_provide()
 	{
-		static NetExamplePlugin *p = new NetExamplePlugin() ;
+		static RetroChessPlugin *p = new RetroChessPlugin() ;
 
 		return (void*)p ;
 	}
@@ -64,7 +64,7 @@ extern "C" {
 	uint32_t RETROSHARE_PLUGIN_api = RS_PLUGIN_API_VERSION ;
 }
 
-void NetExamplePlugin::getPluginVersion(int& major, int& minor, int& build, int& svn_rev) const
+void RetroChessPlugin::getPluginVersion(int& major, int& minor, int& build, int& svn_rev) const
 {
 	major = RS_MAJOR_VERSION ;
 	minor = RS_MINOR_VERSION ;
@@ -72,25 +72,25 @@ void NetExamplePlugin::getPluginVersion(int& major, int& minor, int& build, int&
 	svn_rev = RS_REVISION_NUMBER ;
 }
 
-NetExamplePlugin::NetExamplePlugin()
+RetroChessPlugin::RetroChessPlugin()
 {
 	qRegisterMetaType<RsPeerId>("RsPeerId");
 	mainpage = NULL ;
-	mNetExample = NULL ;
+	mRetroChess = NULL ;
 	mPlugInHandler = NULL;
 	mPeers = NULL;
 	config_page = NULL ;
 	mIcon = NULL ;
 
-	mNetExampleNotify = new NetExampleNotify;
+	mRetroChessNotify = new RetroChessNotify;
 }
 
-void NetExamplePlugin::setInterfaces(RsPlugInInterfaces &interfaces)
+void RetroChessPlugin::setInterfaces(RsPlugInInterfaces &interfaces)
 {
     mPeers = interfaces.mPeers;
 }
 
-/*ConfigPage *NetExamplePlugin::qt_config_page() const
+/*ConfigPage *RetroChessPlugin::qt_config_page() const
 {
 	// The config pages are deleted when config is closed, so it's important not to static the
 	// created object.
@@ -98,7 +98,7 @@ void NetExamplePlugin::setInterfaces(RsPlugInInterfaces &interfaces)
 	return new AudioInputConfig() ;
 }*/
 
-QDialog *NetExamplePlugin::qt_about_page() const
+QDialog *RetroChessPlugin::qt_about_page() const
 {
 	static QMessageBox *about_dialog = NULL ;
 	
@@ -107,11 +107,11 @@ QDialog *NetExamplePlugin::qt_about_page() const
 		about_dialog = new QMessageBox() ;
 
 		QString text ;
-		text += QObject::tr("<h3>RetroShare NetExample plugin</h3><br/>   * Contributors: Cyril Soler, Josselin Jacquard<br/>") ;
-		text += QObject::tr("<br/>The NetExample plugin adds NetExample to the private chat window of RetroShare. to use it, proceed as follows:<UL>") ;
+		text += QObject::tr("<h3>RetroShare RetroChess plugin</h3><br/>   * Contributors: Cyril Soler, Josselin Jacquard<br/>") ;
+		text += QObject::tr("<br/>The RetroChess plugin adds RetroChess to the private chat window of RetroShare. to use it, proceed as follows:<UL>") ;
 		text += QObject::tr("<li> setup microphone levels using the configuration panel</li>") ;
 		text += QObject::tr("<li> check your microphone by looking at the VU-metters</li>") ;
-		text += QObject::tr("<li> in the private chat, enable sound input/output by clicking on the two NetExample icons</li></ul>") ;
+		text += QObject::tr("<li> in the private chat, enable sound input/output by clicking on the two RetroChess icons</li></ul>") ;
 		text += QObject::tr("Your friend needs to run the plugin to talk/listen to you, or course.") ;
 		text += QObject::tr("<br/><br/>This is an experimental feature. Don't hesitate to send comments and suggestion to the RS dev team.") ;
 
@@ -122,11 +122,11 @@ QDialog *NetExamplePlugin::qt_about_page() const
 	return about_dialog ;
 }
 
-/*ChatWidgetHolder *NetExamplePlugin::qt_get_chat_widget_holder(ChatWidget *chatWidget) const
+/*ChatWidgetHolder *RetroChessPlugin::qt_get_chat_widget_holder(ChatWidget *chatWidget) const
 {
 	switch (chatWidget->chatType()) {
 	case ChatWidget::CHATTYPE_PRIVATE:
-		return new NetExampleChatWidgetHolder(chatWidget, mNetExampleNotify);
+		return new RetroChessChatWidgetHolder(chatWidget, mRetroChessNotify);
 	case ChatWidget::CHATTYPE_UNKNOWN:
 	case ChatWidget::CHATTYPE_LOBBY:
 	case ChatWidget::CHATTYPE_DISTANT:
@@ -136,33 +136,33 @@ QDialog *NetExamplePlugin::qt_about_page() const
 	return NULL;
 }*/
 
-p3Service *NetExamplePlugin::p3_service() const
+p3Service *RetroChessPlugin::p3_service() const
 {
-	if(mNetExample == NULL)
-		rsNetExample = mNetExample = new p3NetExample(mPlugInHandler,mNetExampleNotify) ; // , 3600 * 24 * 30 * 6); // 6 Months
+	if(mRetroChess == NULL)
+		rsRetroChess = mRetroChess = new p3RetroChess(mPlugInHandler,mRetroChessNotify) ; // , 3600 * 24 * 30 * 6); // 6 Months
 
-	return mNetExample ;
+	return mRetroChess ;
 }
 
-void NetExamplePlugin::setPlugInHandler(RsPluginHandler *pgHandler)
+void RetroChessPlugin::setPlugInHandler(RsPluginHandler *pgHandler)
 {
     mPlugInHandler = pgHandler;
 }
 
-QIcon *NetExamplePlugin::qt_icon() const
+QIcon *RetroChessPlugin::qt_icon() const
 {
 	if (mIcon == NULL) {
-		Q_INIT_RESOURCE(NetExample_images);
+		Q_INIT_RESOURCE(RetroChess_images);
 
-		mIcon = new QIcon(IMAGE_NetExample);
+		mIcon = new QIcon(IMAGE_RetroChess);
 	}
 
 	return mIcon;
 }
-MainPage *NetExamplePlugin::qt_page() const
+MainPage *RetroChessPlugin::qt_page() const
 {
 	if(mainpage == NULL){
-		mainpage = new NEMainpage(0, mNetExampleNotify);//mPeers, mFiles) ;
+		mainpage = new NEMainpage(0, mRetroChessNotify);//mPeers, mFiles) ;
 		//tpage = new NEMainpage( );
 		//mainpage = tpage;
 	}
@@ -170,29 +170,29 @@ MainPage *NetExamplePlugin::qt_page() const
 	return mainpage ;
 }
 
-std::string NetExamplePlugin::getShortPluginDescription() const
+std::string RetroChessPlugin::getShortPluginDescription() const
 {
-	return "NetExample";
+	return "RetroChess";
 }
 
-std::string NetExamplePlugin::getPluginName() const
+std::string RetroChessPlugin::getPluginName() const
 {
-	return "NetExamplePlugin";
+	return "RetroChessPlugin";
 }
 
-QTranslator* NetExamplePlugin::qt_translator(QApplication */*app*/, const QString& languageCode, const QString& externalDir) const
+QTranslator* RetroChessPlugin::qt_translator(QApplication */*app*/, const QString& languageCode, const QString& externalDir) const
 {
 	return NULL;
 }
 
-void NetExamplePlugin::qt_sound_events(SoundEvents &/*events*/) const
+void RetroChessPlugin::qt_sound_events(SoundEvents &/*events*/) const
 {
-//	events.addEvent(QApplication::translate("NetExample", "NetExample"), QApplication::translate("NetExample", "Incoming call"), NetExample_SOUND_INCOMING_CALL);
+//	events.addEvent(QApplication::translate("RetroChess", "RetroChess"), QApplication::translate("RetroChess", "Incoming call"), RetroChess_SOUND_INCOMING_CALL);
 }
 
-/*ToasterNotify *NetExamplePlugin::qt_toasterNotify(){
-	if (!mNetExampleToasterNotify) {
-		mNetExampleToasterNotify = new NetExampleToasterNotify(mNetExample, mNetExampleNotify);
+/*ToasterNotify *RetroChessPlugin::qt_toasterNotify(){
+	if (!mRetroChessToasterNotify) {
+		mRetroChessToasterNotify = new RetroChessToasterNotify(mRetroChess, mRetroChessNotify);
 	}
-	return mNetExampleToasterNotify;
+	return mRetroChessToasterNotify;
 }*/
