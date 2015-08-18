@@ -123,9 +123,33 @@ int	p3NetExample::status()
 {
 	return 1;
 }
+#include<qjsondocument.h>
+void p3NetExample::qvm_msg_peer(RsPeerId peerID, QVariantMap data){
+	QJsonDocument jsondoc = QJsonDocument::fromVariant(data);
+	std::string msg = jsondoc.toBinaryData().toStdString();
+#ifdef DEBUG_NetExample
+		std::cerr << "p3NetExample::msg_all() MSging: " << peerID;
+		std::cerr << std::endl;
+#endif
 
-void p3NetExample::qvm_msg_all(QVariantMap msg){
+		std::cout << "MSging: " << peerID.toStdString() << "\n";
+		/* create the packet */
+		RsNetExampleDataItem *pingPkt = new RsNetExampleDataItem();
+		pingPkt->PeerId(peerID);
+		pingPkt->m_msg = msg;
+		pingPkt->data_size = msg.size();
+		//pingPkt->mSeqNo = mCounter;
+		//pingPkt->mPingTS = convertTsTo64bits(ts);
 
+		//storePingAttempt(*it, ts, mCounter);
+
+#ifdef DEBUG_NetExample
+		std::cerr << "p3NetExample::msg_all() With Packet:";
+		std::cerr << std::endl;
+		pingPkt->print(std::cerr, 10);
+#endif
+
+		sendItem(pingPkt);
 }
 
 void p3NetExample::msg_all(std::string msg){

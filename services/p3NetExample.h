@@ -53,22 +53,6 @@ class p3NetExample: public RsPQIService, public RsNetExample
 
 		/***** overloaded from rsNetExample *****/
 
-		virtual uint32_t getPongResults(const RsPeerId &id, int n, std::list<RsNetExamplePongResult> &results);
-
-		// Call stuff.
-		//
-
-		// Sending data. The client keeps the memory ownership and must delete it after calling this.
-		virtual int sendNetExampleData(const RsPeerId &peer_id,const RsNetExampleDataChunk& chunk) ;
-
-		// The server fill in the data and gives up memory ownership. The client must delete the memory
-		// in each chunk once it has been used.
-		//
-		virtual bool getIncomingData(const RsPeerId& peer_id,std::vector<RsNetExampleDataChunk>& chunks) ;
-
-		virtual int sendNetExampleHangUpCall(const RsPeerId& peer_id) ;
-		virtual int sendNetExampleRinging(const RsPeerId& peer_id) ;
-		virtual int sendNetExampleAcceptCall(const RsPeerId &peer_id) ;
 
 		/***** overloaded from p3Service *****/
 		/*!
@@ -104,7 +88,7 @@ class p3NetExample: public RsPQIService, public RsNetExample
 		void 	msg_all(std::string msg);
 	private:
 
-		void 	qvm_msg_all(QVariantMap msg);
+		void 	qvm_msg_peer(RsPeerId peerID, QVariantMap data);
 
 
 		void handleData(RsNetExampleDataItem*) ;
