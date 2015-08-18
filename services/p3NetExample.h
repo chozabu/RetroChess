@@ -24,6 +24,7 @@
 
 #include <list>
 #include <string>
+#include <QVariantMap>
 
 #include "services/rsNetExampleItems.h"
 #include "services/p3service.h"
@@ -35,25 +36,6 @@
 class p3LinkMgr;
 class NetExampleNotify ;
 
-class NetExamplePeerInfo
-{
-	public:
-
-    bool initialisePeerInfo(const RsPeerId &id);
-
-    RsPeerId mId;
-	double mCurrentPingTS;
-	double mCurrentPingCounter;
-	bool   mCurrentPongRecvd;
-
-	uint32_t mLostPongs;
-	uint32_t mSentPings;
-	uint32_t total_bytes_received ;
-	uint32_t average_incoming_bandwidth ;
-
-	std::list<RsNetExamplePongResult> mPongResults;
-	std::list<RsNetExampleDataItem*> incoming_queue ;
-};
 
 
 //!The RS VoIP Test service.
@@ -121,42 +103,20 @@ class p3NetExample: public RsPQIService, public RsNetExample
 		void broadcast_paint(int x, int y);
 		void 	msg_all(std::string msg);
 	private:
-		int   sendPackets();
-		void 	sendPingMeasurements();
-		void 	sendBandwidthInfo();
 
-		int sendNetExampleBandwidth(const RsPeerId &peer_id,uint32_t bytes_per_sec) ;
+		void 	qvm_msg_all(QVariantMap msg);
 
-		int 	handlePing(RsNetExamplePingItem *item);
-		int 	handlePong(RsNetExamplePongItem *item);
 
-		int 	storePingAttempt(const RsPeerId &id, double ts, uint32_t mCounter);
-		int 	storePongResult(const RsPeerId& id, uint32_t counter, double ts, double rtt, double offset);
-
-		void handleProtocol(RsNetExampleProtocolItem*) ;
-		void handlePaint(RsNetExamplePaintItem *item);
 		void handleData(RsNetExampleDataItem*) ;
 
 		RsMutex mNetExampleMtx;
 
-		NetExamplePeerInfo *locked_GetPeerInfo(const RsPeerId& id);
 
 		static RsTlvKeyValue push_int_value(const std::string& key,int value) ;
 		static int pop_int_value(const std::string& s) ;
 
-		std::map<RsPeerId, NetExamplePeerInfo> mPeerInfo;
-		time_t mSentPingTime;
-		time_t mSentBandwidthInfoTime;
-		uint32_t mCounter;
 
 		RsServiceControl *mServiceControl;
 		NetExampleNotify *mNotify ;
 
-		int _atransmit ;
-		int _voice_hold ;
-		int _vadmin ;
-		int _vadmax ;
-		int _min_loudness ;
-		int _noise_suppress ;
-		bool _echo_cancel ;
 };
