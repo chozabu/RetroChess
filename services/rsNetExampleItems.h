@@ -54,7 +54,7 @@
 
 /**************************************************************************/
 
-const uint16_t RS_SERVICE_TYPE_NetExample_PLUGIN = 0xb031;
+const uint16_t RS_SERVICE_TYPE_NetExample_PLUGIN = 0xb00b5;
 
 const uint8_t RS_PKT_SUBTYPE_NetExample_DATA 	   = 0x01;
 
