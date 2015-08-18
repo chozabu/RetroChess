@@ -78,7 +78,7 @@ class p3NetExample: public RsPQIService, public RsNetExample
 		 */
 		virtual bool saveList(bool& cleanup, std::list<RsItem*>&) ;
 		virtual bool loadList(std::list<RsItem*>& load) ;
-		virtual std::string configurationFileName() const { return "net_example.cfg" ; }
+		virtual std::string configurationFileName() const { return "NetExample.cfg" ; }
 
 		virtual RsServiceInfo getServiceInfo() ;
 

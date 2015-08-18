@@ -64,8 +64,8 @@ const uint8_t QOS_PRIORITY_RS_NetExample = 9 ;
 class RsNetExampleItem: public RsItem
 {
 	public:
-		RsNetExampleItem(uint8_t net_example_subtype)
-			: RsItem(RS_PKT_VERSION_SERVICE,RS_SERVICE_TYPE_NetExample_PLUGIN,net_example_subtype)
+		RsNetExampleItem(uint8_t NetExample_subtype)
+			: RsItem(RS_PKT_VERSION_SERVICE,RS_SERVICE_TYPE_NetExample_PLUGIN,NetExample_subtype)
 		{ 
 			setPriorityLevel(QOS_PRIORITY_RS_NetExample) ;
 		}	

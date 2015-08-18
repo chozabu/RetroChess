@@ -51,7 +51,7 @@ class NetExamplePlugin: public RsPlugin
 		virtual void getPluginVersion(int& major, int& minor, int &build, int& svn_rev) const ;
 		virtual void setPlugInHandler(RsPluginHandler *pgHandler);
 
-		virtual std::string configurationFileName() const { return "net_example.cfg" ; }
+		virtual std::string configurationFileName() const { return "NetExample.cfg" ; }
 
 		virtual std::string getShortPluginDescription() const ;
 		virtual std::string getPluginName() const;
