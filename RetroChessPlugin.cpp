@@ -33,7 +33,7 @@
 #include "gui/RetroChessNotify.h"
 
 
-#define IMAGE_RetroChess ":/images/talking_on.svg"
+#define IMAGE_RetroChess ":/images/chess-icon.png"
 
 static void *inited = new RetroChessPlugin() ;
 
@@ -177,7 +177,7 @@ std::string RetroChessPlugin::getShortPluginDescription() const
 
 std::string RetroChessPlugin::getPluginName() const
 {
-	return "RetroChessPlugin";
+	return "RetroChess";
 }
 
 QTranslator* RetroChessPlugin::qt_translator(QApplication */*app*/, const QString& languageCode, const QString& externalDir) const
