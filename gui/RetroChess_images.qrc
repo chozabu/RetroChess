@@ -35,5 +35,6 @@
         <file>images/rook_white.svg</file>
         <file>images/self_undeafened.svg</file>
         <file>images/chess-icon.png</file>
+        <file>images/chess-icon-32.png</file>
     </qresource>
 </RCC>
