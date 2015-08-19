@@ -15,6 +15,7 @@ MOBILITY = multimedia
 
 DEPENDPATH += ../../retroshare-gui/src/temp/ui ../../libretroshare/src
 INCLUDEPATH += ../../retroshare-gui/src/temp/ui ../../libretroshare/src
+INCLUDEPATH += ../../retroshare-gui/src/retroshare-gui
 
 #################################### Windows #####################################
 

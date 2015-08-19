@@ -42,7 +42,6 @@ public:
 
 signals:
 	void NeMsgArrived(const RsPeerId &peer_id, QString str) ; // emitted when the peer gets a msg
-	void NePaintArrived(const RsPeerId &peer_id, int x, int y) ;
 
 public slots:
 };

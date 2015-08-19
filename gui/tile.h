@@ -21,4 +21,6 @@ public:
     void tileDisplay();
 };
 
+void validate_tile(int row, int col, int c);
+
 #endif // TILE_H

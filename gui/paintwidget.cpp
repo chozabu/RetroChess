@@ -42,7 +42,6 @@ void PaintWidget::mouseMoveEvent(QMouseEvent *event)
 
 	// trigger repaint of widget
 	update();
-	emit mmEvent(pos.x(), pos.y());
 	//tjd->paintMouseMove(event);
 }
 

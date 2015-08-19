@@ -1,6 +1,7 @@
 #include "tile.h"
 #include "validation.h"
 #include "chessextern.h"
+#include "../interface/rsRetroChess.h"
 
 validation *valid = new validation();
 
@@ -16,6 +17,7 @@ void disOrange();
 void Tile::mousePressEvent(QMouseEvent *event)
 {
     validate(this,++count);
+    rsRetroChess->chess_click(this->row,this->col,count);
 }
 
 void Tile::display(char elem)
@@ -61,6 +63,12 @@ void Tile::display(char elem)
     }
     else
         this->clear();
+}
+
+void validate_tile(int row, int col, int c){
+    Tile *clickedtile = tile[col][row];
+    //if (!click1)click1=clickedtile;
+    validate(clickedtile, c);
 }
 
 void validate(Tile *temp, int c)

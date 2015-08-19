@@ -25,8 +25,7 @@ public:
     TopJCDialog* tjd;
     
 signals:
-	void haveUpdate();
-	void mmEvent(int x, int y);
+    void haveUpdate();
 
     
 public slots:

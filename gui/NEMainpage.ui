@@ -59,16 +59,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="PaintWidget" name="paintWidget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>19</x>
-     <y>319</y>
-     <width>571</width>
-     <height>271</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QListWidget" name="netLogWidget">
    <property name="geometry">
     <rect>
@@ -79,12 +69,35 @@
     </rect>
    </property>
   </widget>
+  <widget class="FriendSelectionWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>350</y>
+     <width>281</width>
+     <height>241</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="playButton">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>470</y>
+     <width>84</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Play Chess</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>PaintWidget</class>
+   <class>FriendSelectionWidget</class>
    <extends>QWidget</extends>
-   <header>gui/paintwidget.h</header>
+   <header>gui/common/FriendSelectionWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
