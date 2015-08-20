@@ -5,15 +5,21 @@
 #include "validation.h"
 #include "qwidget.h"
 
+#include "retroshare/rspeers.h"
+
 class RetroChessWindow : public QWidget
 {
     Q_OBJECT
 
     void accessories();
     void chessBoard();
+    RsPeerId p1id;
+    RsPeerId p2id;
+    std::string p1name;
+    std::string p2name;
 public:
     std::string mPeerId;
-    explicit RetroChessWindow(std::string peerid,QWidget *parent = 0);
+    explicit RetroChessWindow(std::string peerid, int player = 0, QWidget *parent = 0);
     ~RetroChessWindow();
     int currentplayer;
     int myid;

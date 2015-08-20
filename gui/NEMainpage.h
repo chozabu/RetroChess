@@ -38,6 +38,7 @@ private:
 	//RetroChessWindow *tempwindow;
 
 	QMap<std::string, RetroChessWindow*> activeGames;
+	void create_chess_window(std::string peer_id);
 };
 
 #endif // NEMAINPAGE_H

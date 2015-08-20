@@ -1,7 +1,7 @@
 #include <QApplication>
 #include "chess.h"
 
-RetroChessWindow::RetroChessWindow(std::string peerid, QWidget *parent) :
+RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *parent) :
     QWidget(parent),
     mPeerId(peerid)
     //ui(new Ui::RetroChessWindow)
@@ -13,6 +13,18 @@ RetroChessWindow::RetroChessWindow(std::string peerid, QWidget *parent) :
     max=0;
     texp = new int[60];
     setGeometry(0,0,1370,700);
+
+
+    if (player){
+        p2id = rsPeers->getOwnId();
+        p1id = RsPeerId(peerid);
+    }else{
+        p1id = RsPeerId(peerid);
+        p2id = rsPeers->getOwnId();
+    }
+
+    p1name = rsPeers->getPeerName(p1id);
+    p2name = rsPeers->getPeerName(p2id);
 
     accessories();
     chessBoard();
@@ -44,11 +56,11 @@ void RetroChessWindow::accessories()
 {
     QWidget *baseWidget = this;
     QLabel *player2 = new QLabel(baseWidget);
-    QLabel *name2 = new QLabel("Player 2", baseWidget);
+    QLabel *name2 = new QLabel(p2name.c_str(), baseWidget);
     QLabel *time2 = new QLabel("00:00:00", baseWidget);
 
     QLabel *player1 = new QLabel(baseWidget);
-    QLabel *name1 = new QLabel("Player 1", baseWidget);
+    QLabel *name1 = new QLabel(p1name.c_str(), baseWidget);
     QLabel *time1 = new QLabel("00:00:00", baseWidget);
 
     QLabel *moves = new QLabel(baseWidget);

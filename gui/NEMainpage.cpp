@@ -58,10 +58,7 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 		RetroChessWindow* rcw = activeGames.value(peer_id.toStdString());
 		rcw->validate_tile(row,col,count);
 	}else if (type == "chess_init"){
-		std::string fid = peer_id.toStdString();
-		RetroChessWindow *rcw = new RetroChessWindow(fid);
-		rcw->show();
-		activeGames.insert(fid, rcw);
+		create_chess_window(peer_id.toStdString());
 	}else{
 		QString output = QTime::currentTime().toString() +" ";
 		output+= QString::fromStdString(rsPeers->getPeerName(peer_id));
@@ -86,23 +83,26 @@ void NEMainpage::on_broadcastButton_clicked()
 	ui->msgInput->clear();
 }
 
+void NEMainpage::create_chess_window(std::string peer_id){
+	RetroChessWindow *rcw = new RetroChessWindow(peer_id);
+	rcw->show();
+
+	activeGames.insert(peer_id, rcw);
+	ui->active_games->addItem(QString::fromStdString(peer_id));
+}
+
 void NEMainpage::on_playButton_clicked()
 {
 	//get peer
 	FriendSelectionWidget::IdType idType;
 	std::string fid = ui->widget->selectedId(idType);
 	//make_board();
-
-	RetroChessWindow *rcw = new RetroChessWindow(fid);
-	//tempwindow = rcw;
-	rcw->show();
-	//rsRetroChess->set_peer(RsPeerId(fid));
+	create_chess_window(fid);
 
 	QVariantMap map;
 	map.insert("type", "chess_init");
 
 	rsRetroChess->qvm_msg_peer(RsPeerId(fid),map);
 
-	activeGames.insert(fid, rcw);
 	std::cout << fid;
 }
