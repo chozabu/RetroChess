@@ -57,6 +57,11 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 		int count = vmap.value("count").toInt();
 		RetroChessWindow* rcw = activeGames.value(peer_id.toStdString());
 		rcw->validate_tile(row,col,count);
+	}else if (type == "chess_init"){
+		std::string fid = peer_id.toStdString();
+		RetroChessWindow *rcw = new RetroChessWindow(fid);
+		rcw->show();
+		activeGames.insert(fid, rcw);
 	}else{
 		QString output = QTime::currentTime().toString() +" ";
 		output+= QString::fromStdString(rsPeers->getPeerName(peer_id));
@@ -92,6 +97,11 @@ void NEMainpage::on_playButton_clicked()
 	//tempwindow = rcw;
 	rcw->show();
 	//rsRetroChess->set_peer(RsPeerId(fid));
+
+	QVariantMap map;
+	map.insert("type", "chess_init");
+
+	rsRetroChess->qvm_msg_peer(RsPeerId(fid),map);
 
 	activeGames.insert(fid, rcw);
 	std::cout << fid;
