@@ -34,6 +34,8 @@ private slots:
 private:
 	Ui::NEMainpage *ui;
 	RetroChessNotify *mNotify;
+
+	RetroChessWindow *tempwindow;
 };
 
 #endif // NEMAINPAGE_H

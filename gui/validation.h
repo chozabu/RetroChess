@@ -5,19 +5,11 @@
 
 class validation
 {
-    int flag,retVal;
+
+    int *tile;
 
 public:
     validation();
-    int chooser(Tile *temp);
-    int validateBishop(Tile *temp);
-    int validateQueen(Tile *temp);
-    int validateKing(Tile *temp);
-    int validateHorse(Tile *temp);
-    int validateRook(Tile *temp);
-    int validatePawn(Tile *temp);
-    void orange();
-    int check(Tile *temp);
 };
 
 #endif // VALIDATION_H

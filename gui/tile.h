@@ -19,6 +19,7 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void display(char elem);
     void tileDisplay();
+    void validate(int c);
 };
 
 void validate_tile(int row, int col, int c);

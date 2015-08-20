@@ -53,8 +53,7 @@ HEADERS = RetroChessPlugin.h                 \
     gui/paintwidget.h \
     gui/tile.h \
     gui/validation.h \
-    gui/chess.h \
-    gui/chessextern.h
+    gui/chess.h
 
 #FORMS   = gui/AudioInputConfig.ui
 
