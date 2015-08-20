@@ -24,6 +24,7 @@ public:
 	~NEMainpage();
 
 private slots:
+  void contextMenuFriendsList(QPoint);
 	void on_pingAllButton_clicked();
 	void NeMsgArrived(const RsPeerId &peer_id, QString str);
 

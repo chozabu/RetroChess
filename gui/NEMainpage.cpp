@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <QTime>
+#include <QMenu>
 
 
 NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
@@ -18,9 +19,10 @@ NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
 	ui->setupUi(this);
 
 	connect(mNotify, SIGNAL(NeMsgArrived(RsPeerId,QString)), this , SLOT(NeMsgArrived(RsPeerId,QString)));
+	    connect(ui->friendSelectionWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuFriendsList(QPoint)));
 	//ui->listWidget->addItem("str");
-	ui->widget->start();
-	ui->widget->setModus(FriendSelectionWidget::MODUS_SINGLE);
+	ui->friendSelectionWidget->start();
+	ui->friendSelectionWidget->setModus(FriendSelectionWidget::MODUS_SINGLE);
 
 }
 
@@ -95,7 +97,7 @@ void NEMainpage::on_playButton_clicked()
 {
 	//get peer
 	FriendSelectionWidget::IdType idType;
-	std::string fid = ui->widget->selectedId(idType);
+	std::string fid = ui->friendSelectionWidget->selectedId(idType);
 	//make_board();
 	create_chess_window(fid);
 
@@ -105,4 +107,22 @@ void NEMainpage::on_playButton_clicked()
 	rsRetroChess->qvm_msg_peer(RsPeerId(fid),map);
 
 	std::cout << fid;
+}
+
+void NEMainpage::contextMenuFriendsList(QPoint)
+{
+    QMenu contextMnu(this);
+
+    int selectedCount = ui->friendSelectionWidget->selectedItemCount();
+
+    FriendSelectionWidget::IdType idType;
+    ui->friendSelectionWidget->selectedId(idType);
+
+    QAction *action = contextMnu.addAction(QIcon(), tr("Play Chess"), this,  SLOT(on_playButton_clicked()));
+    action->setEnabled(selectedCount);
+
+
+
+    
+    contextMnu.exec(QCursor::pos());
 }
