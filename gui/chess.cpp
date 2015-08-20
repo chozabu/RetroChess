@@ -1,8 +1,9 @@
 #include <QApplication>
 #include "chess.h"
 
-RetroChessWindow::RetroChessWindow(QWidget *parent) :
-    QWidget(parent)//,
+RetroChessWindow::RetroChessWindow(std::string peerid, QWidget *parent) :
+    QWidget(parent),
+    mPeerId(peerid)
     //ui(new Ui::RetroChessWindow)
 {
 
@@ -20,6 +21,7 @@ RetroChessWindow::RetroChessWindow(QWidget *parent) :
 RetroChessWindow::~RetroChessWindow()
 {
 }
+
 class Border
 {
 public:
@@ -171,20 +173,6 @@ void RetroChessWindow::chessBoard()
     bC=4;
 
 
-}
-
-QWidget* make_board()
-{
-    //texp = new int[60];
-    QWidget *myWidget = new QWidget();
-    myWidget->setGeometry(0,0,1370,700);
-
-    //accessories(myWidget);
-    //chessBoard(myWidget,tile);
-    RetroChessWindow *rcw = new RetroChessWindow();
-
-    myWidget->show();
-    return myWidget;
 }
 
 

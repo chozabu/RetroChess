@@ -17,7 +17,8 @@ void disOrange();
 void Tile::mousePressEvent(QMouseEvent *event)
 {
     validate(++((RetroChessWindow*)parentWidget())->count);
-    rsRetroChess->chess_click(this->row,this->col,((RetroChessWindow*)parentWidget())->count);
+    std::string peer_id = ((RetroChessWindow*)parentWidget())->mPeerId;
+    rsRetroChess->chess_click(peer_id, this->row,this->col,((RetroChessWindow*)parentWidget())->count);
 }
 
 void Tile::display(char elem)

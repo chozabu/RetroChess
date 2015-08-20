@@ -43,8 +43,8 @@ class RsRetroChess
 	virtual void ping_all() = 0;
 	virtual void broadcast_paint(int x, int y) = 0;
 	virtual void msg_all(std::string msg) = 0;
-	virtual void chess_click(int col, int row, int count) = 0;
-	virtual void set_peer(RsPeerId peer) = 0;
+	virtual void chess_click(std::string peer_id, int col, int row, int count) = 0;
+	//virtual void set_peer(RsPeerId peer) = 0;
 };
 
 

@@ -55,7 +55,8 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 		int row = vmap.value("row").toInt();
 		int col = vmap.value("col").toInt();
 		int count = vmap.value("count").toInt();
-		tempwindow->validate_tile(row,col,count);
+		RetroChessWindow* rcw = activeGames.value(peer_id.toStdString());
+		rcw->validate_tile(row,col,count);
 	}else{
 		QString output = QTime::currentTime().toString() +" ";
 		output+= QString::fromStdString(rsPeers->getPeerName(peer_id));
@@ -82,14 +83,16 @@ void NEMainpage::on_broadcastButton_clicked()
 
 void NEMainpage::on_playButton_clicked()
 {
-
-	//make_board();
-
-	RetroChessWindow *rcw = new RetroChessWindow();
-	tempwindow = rcw;
-	rcw->show();
+	//get peer
 	FriendSelectionWidget::IdType idType;
 	std::string fid = ui->widget->selectedId(idType);
-	rsRetroChess->set_peer(RsPeerId(fid));
+	//make_board();
+
+	RetroChessWindow *rcw = new RetroChessWindow(fid);
+	//tempwindow = rcw;
+	rcw->show();
+	//rsRetroChess->set_peer(RsPeerId(fid));
+
+	activeGames.insert(fid, rcw);
 	std::cout << fid;
 }

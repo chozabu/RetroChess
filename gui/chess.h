@@ -12,7 +12,8 @@ class RetroChessWindow : public QWidget
     void accessories();
     void chessBoard();
 public:
-    explicit RetroChessWindow(QWidget *parent = 0);
+    std::string mPeerId;
+    explicit RetroChessWindow(std::string peerid,QWidget *parent = 0);
     ~RetroChessWindow();
     int currentplayer;
     int myid;

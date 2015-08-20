@@ -90,8 +90,8 @@ class p3RetroChess: public RsPQIService, public RsRetroChess
 		void raw_msg_peer(RsPeerId peerID, std::string msg);
 		void 	qvm_msg_peer(RsPeerId peerID, QVariantMap data);
 
-		void chess_click(int col, int row, int count);
-		void set_peer(RsPeerId peer);
+		void chess_click(std::string peer_id, int col, int row, int count);
+		//void set_peer(RsPeerId peer);
 private:
 
 
@@ -100,7 +100,7 @@ private:
 
 		RsMutex mRetroChessMtx;
 
-		RsPeerId mPeerID;
+		//RsPeerId mPeerID;
 
 
 		static RsTlvKeyValue push_int_value(const std::string& key,int value) ;

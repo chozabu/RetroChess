@@ -138,7 +138,7 @@ void p3RetroChess::qvm_msg_peer(RsPeerId peerID, QVariantMap data){
 	raw_msg_peer(peerID, msg);
 }
 
-void p3RetroChess::chess_click(int col, int row, int count)
+void p3RetroChess::chess_click(std::string peer_id, int col, int row, int count)
 {
 	QVariantMap map;
 	map.insert("type", "chessclick");
@@ -146,14 +146,15 @@ void p3RetroChess::chess_click(int col, int row, int count)
 	map.insert("row", row);
 	map.insert("count", count);
 
-	qvm_msg_peer(mPeerID,map);
+	RsPeerId peerID = RsPeerId(peer_id);
+	qvm_msg_peer(peerID,map);
 
 }
 
-void p3RetroChess::set_peer(RsPeerId peer)
+/*void p3RetroChess::set_peer(RsPeerId peer)
 {
 	mPeerID = peer;
-}
+}*/
 void p3RetroChess::raw_msg_peer(RsPeerId peerID, std::string msg){
 	std::cout << "MSging: " << peerID.toStdString() << "\n";
 	std::cout << "MSging: " << msg << "\n";

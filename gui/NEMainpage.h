@@ -35,7 +35,9 @@ private:
 	Ui::NEMainpage *ui;
 	RetroChessNotify *mNotify;
 
-	RetroChessWindow *tempwindow;
+	//RetroChessWindow *tempwindow;
+
+	QMap<std::string, RetroChessWindow*> activeGames;
 };
 
 #endif // NEMAINPAGE_H
