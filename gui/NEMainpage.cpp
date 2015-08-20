@@ -1,10 +1,13 @@
 #include "NEMainpage.h"
 #include "ui_NEMainpage.h"
+
 //#include "services/p3RetroChess.h"
 #include "interface/rsRetroChess.h"
-#include<qjsondocument.h>
+#include <qjsondocument.h>
+
 #include <iostream>
 #include <string>
+#include <QTime>
 
 
 NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
@@ -43,7 +46,8 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 	std::cout << std::endl;
 	QString type = vmap.value("type").toString();
 	if (type == "chat"){
-		QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
+	  QString output = QTime::currentTime().toString() +" ";
+		output+= QString::fromStdString(rsPeers->getPeerName(peer_id));
 		output+=": ";
 		output+=vmap.value("message").toString();
 		ui->listWidget->addItem(output);
@@ -53,14 +57,16 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 		int count = vmap.value("count").toInt();
 		tempwindow->validate_tile(row,col,count);
 	}else{
-		QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
+		QString output = QTime::currentTime().toString() +" ";
+		output+= QString::fromStdString(rsPeers->getPeerName(peer_id));
 		output+=": ";
 		output+=str;
 		ui->listWidget->addItem(output);
 	}
 
 	{
-		QString output = QString::fromStdString(rsPeers->getPeerName(peer_id));
+		QString output = QTime::currentTime().toString() +" ";
+		output+= QString::fromStdString(rsPeers->getPeerName(peer_id));
 		output+=": ";
 		output+=str;
 		ui->netLogWidget->addItem(output);
