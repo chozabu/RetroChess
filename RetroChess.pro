@@ -41,7 +41,8 @@ SOURCES = RetroChessPlugin.cpp               \
     gui/RetroChessNotify.cpp \
     gui/chess.cpp \
     gui/tile.cpp \
-    gui/validation.cpp
+    gui/validation.cpp \
+    gui/RetroChessChatWidgetHolder.cpp
 
 HEADERS = RetroChessPlugin.h                 \
           services/p3RetroChess.h            \
@@ -51,7 +52,8 @@ HEADERS = RetroChessPlugin.h                 \
     gui/RetroChessNotify.h \
     gui/tile.h \
     gui/validation.h \
-    gui/chess.h
+    gui/chess.h \
+    gui/RetroChessChatWidgetHolder.h
 
 #FORMS   = gui/AudioInputConfig.ui
 

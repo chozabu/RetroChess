@@ -20,3 +20,9 @@ void RetroChessNotify::notifyReceivedMsg(const RsPeerId& peer_id, QString str)
 	std::cout << std::endl;
 	emit NeMsgArrived(peer_id, str) ;
 }
+
+void RetroChessNotify::notifyChessStart(const RsPeerId &peer_id)
+{
+	emit chessStart(peer_id) ;
+
+}

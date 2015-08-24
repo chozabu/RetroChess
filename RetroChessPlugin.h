@@ -42,7 +42,7 @@ class RetroChessPlugin: public RsPlugin
 		virtual uint16_t        rs_service_id()         const { return RS_SERVICE_TYPE_RetroChess_PLUGIN ; }
 		//virtual ConfigPage     *qt_config_page()        const ;
 		virtual QDialog        *qt_about_page()         const ;
-		//virtual ChatWidgetHolder *qt_get_chat_widget_holder(ChatWidget *chatWidget) const ;
+		virtual ChatWidgetHolder *qt_get_chat_widget_holder(ChatWidget *chatWidget) const ;
 		
 		virtual QIcon *qt_icon() const;
 		virtual QTranslator    *qt_translator(QApplication *app, const QString& languageCode, const QString& externalDir) const;

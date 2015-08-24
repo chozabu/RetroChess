@@ -47,6 +47,11 @@ class RsRetroChess
 	virtual void qvm_msg_peer(RsPeerId peerID, QVariantMap data) = 0;
 	virtual void str_msg_peer(RsPeerId peerID, QString strdata) = 0;
 	virtual void raw_msg_peer(RsPeerId peerID, std::string msg) = 0;
+	virtual bool hasInviteFrom(RsPeerId peerID) = 0;
+	virtual bool hasInviteTo(RsPeerId peerID) = 0;
+	virtual void acceptedInvite(RsPeerId peerID) = 0;
+	virtual void gotInvite(RsPeerId peerID) = 0;
+	virtual void sendInvite(RsPeerId peerID) = 0;
 };
 
 

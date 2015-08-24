@@ -19,6 +19,7 @@ NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
 	ui->setupUi(this);
 
 	connect(mNotify, SIGNAL(NeMsgArrived(RsPeerId,QString)), this , SLOT(NeMsgArrived(RsPeerId,QString)));
+	connect(mNotify, SIGNAL(chessStart(RsPeerId)), this , SLOT(chessStart(RsPeerId)));
 	    connect(ui->friendSelectionWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuFriendsList(QPoint)));
 	//ui->listWidget->addItem("str");
 	ui->friendSelectionWidget->start();
@@ -38,6 +39,11 @@ void NEMainpage::on_pingAllButton_clicked()
 	NeMsgArrived(rsPeers->getOwnId(),"ping");
 }
 
+
+void NEMainpage::chessStart(const RsPeerId &peer_id){
+
+	create_chess_window(peer_id.toStdString(), 0);
+}
 
 void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 {
@@ -61,6 +67,13 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 		rcw->validate_tile(row,col,count);
 	}else if (type == "chess_init"){
 		create_chess_window(peer_id.toStdString(), 1);
+	}else if (type == "chess_invite"){
+		rsRetroChess->gotInvite(peer_id);
+	}else if (type == "chess_accept"){
+		if (rsRetroChess->hasInviteTo(peer_id)){
+			create_chess_window(peer_id.toStdString(), 1);
+			rsRetroChess->acceptedInvite(peer_id);
+		}
 	}else{
 		QString output = QTime::currentTime().toString() +" ";
 		output+= QString::fromStdString(rsPeers->getPeerName(peer_id));

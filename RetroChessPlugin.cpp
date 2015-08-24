@@ -26,11 +26,13 @@
 #include <QString>
 #include <QIcon>
 #include <QMessageBox>
+#include "gui/chat/ChatWidget.h"
 
 #include "RetroChessPlugin.h"
 #include "interface/rsRetroChess.h"
 #include "gui/NEMainpage.h"
 #include "gui/RetroChessNotify.h"
+#include "gui/RetroChessChatWidgetHolder.h"
 
 
 #define IMAGE_RetroChess ":/images/chess-icon.png"
@@ -122,7 +124,7 @@ QDialog *RetroChessPlugin::qt_about_page() const
 	return about_dialog ;
 }
 
-/*ChatWidgetHolder *RetroChessPlugin::qt_get_chat_widget_holder(ChatWidget *chatWidget) const
+ChatWidgetHolder *RetroChessPlugin::qt_get_chat_widget_holder(ChatWidget *chatWidget) const
 {
 	switch (chatWidget->chatType()) {
 	case ChatWidget::CHATTYPE_PRIVATE:
@@ -134,7 +136,7 @@ QDialog *RetroChessPlugin::qt_about_page() const
 	}
 
 	return NULL;
-}*/
+}
 
 p3Service *RetroChessPlugin::p3_service() const
 {

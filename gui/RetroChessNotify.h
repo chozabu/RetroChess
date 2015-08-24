@@ -39,9 +39,12 @@ public:
 	explicit RetroChessNotify(QObject *parent = 0);
 	void notifyReceivedPaint(const RsPeerId &peer_id, int x, int y) ;
 	void notifyReceivedMsg(const RsPeerId &peer_id, QString str) ;
+	void notifyChessStart(const RsPeerId &peer_id) ;
 
 signals:
 	void NeMsgArrived(const RsPeerId &peer_id, QString str) ; // emitted when the peer gets a msg
+
+	void chessStart(const RsPeerId &peer_id) ;
 
 public slots:
 };

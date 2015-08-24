@@ -27,6 +27,7 @@ private slots:
   void contextMenuFriendsList(QPoint);
 	void on_pingAllButton_clicked();
 	void NeMsgArrived(const RsPeerId &peer_id, QString str);
+	void chessStart(const RsPeerId &peer_id);
 
 	void on_broadcastButton_clicked();
 

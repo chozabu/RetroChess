@@ -92,10 +92,17 @@ class p3RetroChess: public RsPQIService, public RsRetroChess
 
 		void chess_click(std::string peer_id, int col, int row, int count);
 		//void set_peer(RsPeerId peer);
+
+		bool hasInviteFrom(RsPeerId peerID);
+		bool hasInviteTo(RsPeerId peerID);
+		void gotInvite(RsPeerId peerID);
+		void acceptedInvite(RsPeerId peerID);
+		void sendInvite(RsPeerId peerID);
 private:
 
 
-
+		std::set<RsPeerId> invitesTo;
+		std::set<RsPeerId> invitesFrom;
 		void handleData(RsRetroChessDataItem*) ;
 
 		RsMutex mRetroChessMtx;

@@ -151,6 +151,47 @@ void p3RetroChess::chess_click(std::string peer_id, int col, int row, int count)
 
 }
 
+bool p3RetroChess::hasInviteFrom(RsPeerId peerID)
+{
+	return invitesFrom.find(peerID)!=invitesFrom.end();
+}
+bool p3RetroChess::hasInviteTo(RsPeerId peerID)
+{
+	return invitesTo.find(peerID)!=invitesTo.end();
+}
+
+void p3RetroChess::acceptedInvite(RsPeerId peerID)
+{
+	std::set<RsPeerId>::iterator it =invitesTo.find(peerID);
+	if (it != invitesTo.end()){
+		invitesTo.erase(it);
+	}
+
+	it =invitesFrom.find(peerID);
+	if (it != invitesFrom.end()){
+		invitesFrom.erase(it);
+	}
+	raw_msg_peer(peerID, "{\"type\":\"chess_accept\"}");
+}
+
+void p3RetroChess::gotInvite(RsPeerId peerID)
+{
+
+	std::set<RsPeerId>::iterator it =invitesFrom.find(peerID);
+	if (it == invitesFrom.end()){
+		invitesFrom.insert(peerID);
+	}
+}
+void p3RetroChess::sendInvite(RsPeerId peerID)
+{
+
+	std::set<RsPeerId>::iterator it =invitesTo.find(peerID);
+	if (it == invitesTo.end()){
+		invitesTo.insert(peerID);
+	}
+	raw_msg_peer(peerID, "{\"type\":\"chess_invite\"}");
+}
+
 /*void p3RetroChess::set_peer(RsPeerId peer)
 {
 	mPeerID = peer;
@@ -260,6 +301,14 @@ bool	p3RetroChess::recvItem(RsItem *item)
 			handleData(dynamic_cast<RsRetroChessDataItem*>(item));
 			keep = true ;
 			break;
+		/*case RS_PKT_SUBTYPE_RetroChess_INVITE:
+			if (invites.find(item->PeerId()!=invites.end())){
+				invites.insert(item->PeerId());
+			}
+			mNotify->
+
+			//keep = true ;
+			break;*/
 
 		default:
 			break;
