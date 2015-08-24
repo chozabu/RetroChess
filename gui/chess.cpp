@@ -98,7 +98,7 @@ void RetroChessWindow::disOrange()
 void RetroChessWindow::validate_tile(int row, int col, int c){
     Tile *clickedtile = tile[col][row];
     //if (!click1)click1=clickedtile;
-    clickedtile->validate(++c);
+    clickedtile->validate(++count);
 }
 
 void RetroChessWindow::chessBoard()
