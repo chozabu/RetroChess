@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "chess.h"
+#include "gui/common/AvatarDefs.h"
 
 RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *parent) :
     QWidget(parent),
@@ -68,12 +69,17 @@ void RetroChessWindow::accessories()
     name1->setGeometry(125,610,80,20);
     time1->setGeometry(120,635,80,20);
     player1->setGeometry(100,500,100,100);
-    player1->setPixmap(QPixmap(":/images/profile.png"));
+    QPixmap p1avatar;
+    AvatarDefs::getAvatarFromSslId(p1id, p1avatar);
+    player1->setPixmap(p1avatar);//QPixmap(":/images/profile.png"));
+
 
     name2->setGeometry(125,210,80,20);
     time2->setGeometry(120,235,80,20);
     player2->setGeometry(100,100,100,100);
-    player2->setPixmap(QPixmap(":/images/profile.png"));
+    QPixmap p2avatar;
+    AvatarDefs::getAvatarFromSslId(p2id, p2avatar);
+    player2->setPixmap(p2avatar);//QPixmap(":/images/profile.png"));
 
     moves->setGeometry(1000,105,250,550);
     moves->setStyleSheet("QLabel {background-color: white;}");
@@ -92,7 +98,7 @@ void RetroChessWindow::disOrange()
 void RetroChessWindow::validate_tile(int row, int col, int c){
     Tile *clickedtile = tile[col][row];
     //if (!click1)click1=clickedtile;
-    clickedtile->validate(c);
+    clickedtile->validate(++c);
 }
 
 void RetroChessWindow::chessBoard()
