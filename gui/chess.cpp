@@ -15,17 +15,27 @@ RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *pare
     texp = new int[60];
     setGeometry(0,0,1370,700);
 
-
-    if (player){
-        p2id = rsPeers->getOwnId();
-        p1id = RsPeerId(peerid);
+    QString player_str;
+    if (player ){
+        p1id = rsPeers->getOwnId();
+        p2id = RsPeerId(peerid);
+        player_str = " (1)";
     }else{
         p1id = RsPeerId(peerid);
         p2id = rsPeers->getOwnId();
+        player_str = " (2)";
     }
 
     p1name = rsPeers->getPeerName(p1id);
     p2name = rsPeers->getPeerName(p2id);
+
+    QString title = QString::fromStdString(p2name);
+    title += " Playing Chess against ";
+    title += QString::fromStdString(p1name);
+    title+=player_str;
+
+
+    this->setWindowTitle(title);
 
     accessories();
     chessBoard();
