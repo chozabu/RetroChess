@@ -26,6 +26,7 @@ NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
 		connect(ui->friendSelectionWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuFriendsList(QPoint)));
 	ui->friendSelectionWidget->start();
 	ui->friendSelectionWidget->setModus(FriendSelectionWidget::MODUS_SINGLE);
+	ui->friendSelectionWidget->setShowType(FriendSelectionWidget::SHOW_SSL);
 
 }
 
