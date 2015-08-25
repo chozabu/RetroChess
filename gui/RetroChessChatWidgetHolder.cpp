@@ -36,7 +36,6 @@ RetroChessChatWidgetHolder::RetroChessChatWidgetHolder(ChatWidget *chatWidget, R
 	connect(playChessButton, SIGNAL(clicked()), this , SLOT(chessPressed()));
 	connect(notify, SIGNAL(chessInvited(RsPeerId)), this , SLOT(chessnotify()));
 
-  chessnotify();
 }
 
 RetroChessChatWidgetHolder::~RetroChessChatWidgetHolder()
