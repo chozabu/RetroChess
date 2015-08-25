@@ -3,7 +3,11 @@
 
 //#include "services/p3RetroChess.h"
 #include "interface/rsRetroChess.h"
+#include "services/rsRetroChessItems.h"
+#include "retroshare/rsservicecontrol.h"
+#include "gui/notifyqt.h"
 #include <qjsondocument.h>
+#include <qtreewidget.h>
 
 #include <iostream>
 #include <string>
@@ -22,10 +26,12 @@ NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
 
 	connect(mNotify, SIGNAL(NeMsgArrived(RsPeerId,QString)), this , SLOT(NeMsgArrived(RsPeerId,QString)));
 	connect(mNotify, SIGNAL(chessStart(RsPeerId)), this , SLOT(chessStart(RsPeerId)));
-	    connect(ui->friendSelectionWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuFriendsList(QPoint)));
-	//ui->listWidget->addItem("str");
+		connect(ui->friendSelectionWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuFriendsList(QPoint)));
 	ui->friendSelectionWidget->start();
 	ui->friendSelectionWidget->setModus(FriendSelectionWidget::MODUS_SINGLE);
+	ui->friendSelectionWidget->setShowType(FriendSelectionWidget::SHOW_SSL);
+	connect(ui->friendSelectionWidget, SIGNAL(contentChanged()), this, SLOT(on_filterPeersButton_clicked()));
+	connect(NotifyQt::getInstance(), SIGNAL(peerStatusChanged(const QString&,int)), this, SLOT(on_filterPeersButton_clicked()));
 
 }
 
@@ -37,8 +43,7 @@ NEMainpage::~NEMainpage()
 
 void NEMainpage::on_pingAllButton_clicked()
 {
-	rsRetroChess->ping_all();
-	NeMsgArrived(rsPeers->getOwnId(),"ping");
+
 }
 
 
@@ -140,6 +145,66 @@ void NEMainpage::contextMenuFriendsList(QPoint)
 
 
 
-    
+
     contextMnu.exec(QCursor::pos());
+}
+
+void NEMainpage::on_filterPeersButton_clicked()
+{
+	std::cout << "\n\n filter peers \n";
+
+	std::list<RsPeerId> ssllist ;
+	rsPeers->getFriendList(ssllist);
+
+
+    RsPeerServiceInfo ownServices;
+    rsServiceControl->getOwnServices(ownServices);
+
+    std::vector<RsPeerId> peer_ids ;
+    std::vector<uint32_t> service_ids ;
+
+	for(std::list<RsPeerId>::const_iterator it(ssllist.begin());it!=ssllist.end();++it)
+		peer_ids.push_back(*it) ;
+	service_ids.clear() ;
+	uint32_t service_id;
+	for(std::map<uint32_t, RsServiceInfo>::const_iterator sit(ownServices.mServiceList.begin());sit!=ownServices.mServiceList.end();++sit)
+	{
+		RsServiceInfo rsi = sit->second;
+		service_ids.push_back(sit->first) ;
+		std::cout << rsi.mServiceName << rsi.mServiceType << "\n";
+		if (strcmp(rsi.mServiceName.c_str(), "RetroChess") == 0){
+			service_id = rsi.mServiceType;
+			std::cout << "setting service ID\n";
+		}
+	}
+
+    for(std::list<RsPeerId>::const_iterator it(ssllist.begin());it!=ssllist.end();++it)
+    {
+        RsPeerServiceInfo local_service_perms ;
+        RsPeerServiceInfo remote_service_perms ;
+        RsPeerId id = *it;
+
+        rsServiceControl->getServicesAllowed (*it, local_service_perms) ;
+        rsServiceControl->getServicesProvided(*it,remote_service_perms) ;
+
+        bool  local_allowed =  local_service_perms.mServiceList.find(service_id) !=  local_service_perms.mServiceList.end() ;
+        bool remote_allowed = remote_service_perms.mServiceList.find(service_id) != remote_service_perms.mServiceList.end() ;
+        bool allowed = (local_allowed && remote_allowed);
+        //QString la =
+        QString serviceinfos = QString("peerlocal: ") + QString(local_allowed?"yes":"no") + QString(" remote: ") + QString(remote_allowed?"yes":"no");
+        ui->netLogWidget->addItem(serviceinfos);
+        std::cout << serviceinfos.toStdString() << "\n";
+        //if (allowed){
+        QList<QTreeWidgetItem*> items;
+        ui->friendSelectionWidget->itemsFromId(FriendSelectionWidget::IDTYPE_SSL,id.toStdString(),items);
+
+        std::cout << items.size() << "\n";
+        if (items.size()){
+            QTreeWidgetItem* item = items.first();
+            item->setHidden(!allowed);
+        }
+    }
+
+
+    //
 }
