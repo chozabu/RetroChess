@@ -69,6 +69,7 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 		create_chess_window(peer_id.toStdString(), 1);
 	}else if (type == "chess_invite"){
 		rsRetroChess->gotInvite(peer_id);
+		mNotify->notifyChessInvite(peer_id);
 	}else if (type == "chess_accept"){
 		if (rsRetroChess->hasInviteTo(peer_id)){
 			create_chess_window(peer_id.toStdString(), 1);
