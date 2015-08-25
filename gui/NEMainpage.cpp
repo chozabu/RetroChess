@@ -10,6 +10,8 @@
 #include <QTime>
 #include <QMenu>
 
+#include "gui/chat/ChatDialog.h"
+
 
 NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
 	MainPage(parent),
@@ -68,6 +70,7 @@ void NEMainpage::NeMsgArrived(const RsPeerId &peer_id, QString str)
 	}else if (type == "chess_init"){
 		create_chess_window(peer_id.toStdString(), 1);
 	}else if (type == "chess_invite"){
+		ChatDialog::chatFriend(ChatId(peer_id));
 		rsRetroChess->gotInvite(peer_id);
 		mNotify->notifyChessInvite(peer_id);
 	}else if (type == "chess_accept"){
