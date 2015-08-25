@@ -12,12 +12,24 @@ class RetroChessChatWidgetHolder : public QObject, public ChatWidgetHolder
 
 public:
 	RetroChessChatWidgetHolder(ChatWidget *chatWidget, RetroChessNotify *notify);
+	virtual ~RetroChessChatWidgetHolder();
 
 public slots:
 	void chessPressed();
+  void chessStart();
+  void chessnotify();
+
+
+private slots:
+	void botMouseEnter();
+	void botMouseLeave();  
+	
 protected:
 	QToolButton *playChessButton ;
 	RetroChessNotify *mRetroChessNotify;
+	
+	typedef QMap<QString, RSButtonOnText*> button_map;
+	button_map buttonMapTakeChess;
 };
 
 #endif // RETROCHESSCHATWIDGETHOLDER_H
