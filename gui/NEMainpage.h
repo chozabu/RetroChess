@@ -33,6 +33,8 @@ private slots:
 
 	void on_playButton_clicked();
 
+	void on_filterPeersButton_clicked();
+
 private:
 	Ui::NEMainpage *ui;
 	RetroChessNotify *mNotify;
