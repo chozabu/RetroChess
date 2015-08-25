@@ -34,7 +34,7 @@ RetroChessChatWidgetHolder::RetroChessChatWidgetHolder(ChatWidget *chatWidget, R
 
 	mChatWidget->addChatBarWidget(playChessButton);
 	connect(playChessButton, SIGNAL(clicked()), this , SLOT(chessPressed()));
-	connect(notify, SIGNAL(chessInvited(RsPeerId)), this , SLOT(chessnotify()));
+	connect(notify, SIGNAL(chessInvited(RsPeerId)), this , SLOT(chessnotify(RsPeerId)));
 
 }
 
@@ -47,15 +47,21 @@ RetroChessChatWidgetHolder::~RetroChessChatWidgetHolder()
   }
 }
 
-void RetroChessChatWidgetHolder::chessnotify()
+void RetroChessChatWidgetHolder::chessnotify(RsPeerId from_peer_id)
 {
 	RsPeerId peer_id =  mChatWidget->getChatId().toPeerId();//TODO support GXSID
+	//if (peer_id!=from_peer_id)return;//invite from another chat
 	if (rsRetroChess->hasInviteFrom(peer_id)){
     if (mChatWidget) {
         QString buttonName = QString::fromUtf8(rsPeers->getPeerName(peer_id).c_str());
         if (buttonName.isEmpty()) buttonName = "Chess";//TODO maybe change all with GxsId
-        button_map::iterator it = buttonMapTakeChess.find(buttonName);
-        if (it == buttonMapTakeChess.end()){
+        //disable old buttons
+        button_map::iterator it = buttonMapTakeChess.begin();
+        while (it != buttonMapTakeChess.end()) {
+            it = buttonMapTakeChess.erase(it);
+         }
+        //button_map::iterator it = buttonMapTakeChess.find(buttonName);
+        //if (it == buttonMapTakeChess.end()){
           mChatWidget->addChatMsg(true, tr("Chess Status"), QDateTime::currentDateTime(), QDateTime::currentDateTime()
                                   , tr("%1 inviting you to start Chess. Do you want to accept or decline the invitation?").arg(buttonName), ChatWidget::MSGTYPE_SYSTEM);
           RSButtonOnText *button = mChatWidget->getNewButtonOnTextBrowser(tr("Accept"));
@@ -76,7 +82,7 @@ void RetroChessChatWidgetHolder::chessnotify()
           connect(button,SIGNAL(mouseLeave()),this,SLOT(botMouseLeave()));
 
           buttonMapTakeChess.insert(buttonName, button);
-        }
+        //}
       }
 	
 
