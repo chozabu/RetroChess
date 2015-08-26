@@ -23,15 +23,22 @@ NEMainpage::NEMainpage(QWidget *parent, RetroChessNotify *notify) :
 	ui(new Ui::NEMainpage)
 {
 	ui->setupUi(this);
+	setupMenuActions();
 
 	connect(mNotify, SIGNAL(NeMsgArrived(RsPeerId,QString)), this , SLOT(NeMsgArrived(RsPeerId,QString)));
 	connect(mNotify, SIGNAL(chessStart(RsPeerId)), this , SLOT(chessStart(RsPeerId)));
-		connect(ui->friendSelectionWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuFriendsList(QPoint)));
+	connect(ui->friendSelectionWidget, SIGNAL(itemSelectionChanged()), this, SLOT(friendSelectionChanged()));
+	
 	ui->friendSelectionWidget->start();
 	ui->friendSelectionWidget->setModus(FriendSelectionWidget::MODUS_SINGLE);
 	ui->friendSelectionWidget->setShowType(FriendSelectionWidget::SHOW_SSL);
+	
 	connect(ui->friendSelectionWidget, SIGNAL(contentChanged()), this, SLOT(on_filterPeersButton_clicked()));
 	connect(NotifyQt::getInstance(), SIGNAL(peerStatusChanged(const QString&,int)), this, SLOT(on_filterPeersButton_clicked()));
+	
+	QString welcomemessage = QTime::currentTime().toString() +" ";
+	welcomemessage+= tr("Welcome to RetroChess lobby");
+	ui->listWidget->addItem(welcomemessage);
 
 }
 
@@ -131,24 +138,6 @@ void NEMainpage::on_playButton_clicked()
 	std::cout << fid;
 }
 
-void NEMainpage::contextMenuFriendsList(QPoint)
-{
-    QMenu contextMnu(this);
-
-    int selectedCount = ui->friendSelectionWidget->selectedItemCount();
-
-    FriendSelectionWidget::IdType idType;
-    ui->friendSelectionWidget->selectedId(idType);
-
-    QAction *action = contextMnu.addAction(QIcon(), tr("Play Chess"), this,  SLOT(on_playButton_clicked()));
-    action->setEnabled(selectedCount);
-
-
-
-
-    contextMnu.exec(QCursor::pos());
-}
-
 void NEMainpage::on_filterPeersButton_clicked()
 {
 	std::cout << "\n\n filter peers \n";
@@ -207,4 +196,30 @@ void NEMainpage::on_filterPeersButton_clicked()
 
 
     //
+}
+
+void NEMainpage::setupMenuActions()
+{
+    mActionPlayChess = new QAction(QIcon(), tr("Play Chess"), this);
+    connect(mActionPlayChess, SIGNAL(triggered(bool)), this, SLOT(on_playButton_clicked()));
+
+    ui->friendSelectionWidget->addContextMenuAction(mActionPlayChess);
+
+}
+
+void NEMainpage::friendSelectionChanged()
+{
+	std::set<RsPeerId> peerIds;
+	ui->friendSelectionWidget->selectedIds<RsPeerId,FriendSelectionWidget::IDTYPE_SSL>(peerIds, false);
+
+	std::set<RsGxsId> gxsIds;
+	ui->friendSelectionWidget->selectedIds<RsGxsId,FriendSelectionWidget::IDTYPE_GXS>(gxsIds, false);
+
+	int selectedCount = peerIds.size() + gxsIds.size();
+
+	mActionPlayChess->setEnabled(selectedCount);
+
+	FriendSelectionWidget::IdType idType;
+	ui->friendSelectionWidget->selectedId(idType);
+
 }

@@ -11,6 +11,8 @@
 
 #include <QWidget>
 
+class QAction;
+
 namespace Ui {
 class NEMainpage;
 }
@@ -24,7 +26,8 @@ public:
 	~NEMainpage();
 
 private slots:
-  void contextMenuFriendsList(QPoint);
+  void setupMenuActions();
+  void friendSelectionChanged();
 	void on_pingAllButton_clicked();
 	void NeMsgArrived(const RsPeerId &peer_id, QString str);
 	void chessStart(const RsPeerId &peer_id);
@@ -39,6 +42,7 @@ private:
 	Ui::NEMainpage *ui;
 	RetroChessNotify *mNotify;
 
+	QAction *mActionPlayChess;
 	//RetroChessWindow *tempwindow;
 
 	QMap<std::string, RetroChessWindow*> activeGames;
