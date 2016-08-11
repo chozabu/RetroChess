@@ -15,9 +15,7 @@
 #include <retroshare/rsstatus.h>
 #include <retroshare/rspeers.h>
 
-
-#define CALL_START ":/images/call-start.png"
-#define IMAGE_RetroChess ":/images/chess-icon.png"
+#define IMAGE_RetroChess ":/images/chess.png"
 
 RetroChessChatWidgetHolder::RetroChessChatWidgetHolder(ChatWidget *chatWidget, RetroChessNotify *notify)
  : QObject(), ChatWidgetHolder(chatWidget), mRetroChessNotify(notify)
@@ -29,7 +27,7 @@ RetroChessChatWidgetHolder::RetroChessChatWidgetHolder(ChatWidget *chatWidget, R
 	playChessButton = new QToolButton ;
 	playChessButton->setIcon(icon) ;
 	playChessButton->setToolTip(tr("Invite Friend to Chess"));
-	playChessButton->setIconSize(QSize(24,24)) ;
+	playChessButton->setIconSize(QSize(35,35)) ;
 	playChessButton->setAutoRaise(true) ;
 
 	mChatWidget->addChatBarWidget(playChessButton);
