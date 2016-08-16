@@ -35,7 +35,7 @@
 #include "gui/RetroChessChatWidgetHolder.h"
 
 
-#define IMAGE_RetroChess ":/images/chess-icon.png"
+#define IMAGE_RetroChess ":/images/chess.png"
 
 static void *inited = new RetroChessPlugin() ;
 
