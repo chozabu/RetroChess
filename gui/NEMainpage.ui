@@ -35,10 +35,10 @@
       </sizepolicy>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
+      <enum>QFrame::Raised</enum>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="leftMargin">
@@ -65,7 +65,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="RetroChess_images.qrc">:/images/chess.png</pixmap>
+         <pixmap resource="RetroChess_images.qrc">:/images/retrochess.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
