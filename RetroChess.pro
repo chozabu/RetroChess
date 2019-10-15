@@ -22,7 +22,7 @@ INCLUDEPATH += ../../rapidjson-1.1.0
 #################################### Windows #####################################
 
 linux-* {
-	INCLUDEPATH += /usr/include
+	#INCLUDEPATH += /usr/include
 	#LIBS += $$system(pkg-config --libs opencv)
 }
 
