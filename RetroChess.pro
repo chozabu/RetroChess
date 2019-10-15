@@ -17,6 +17,8 @@ DEPENDPATH += ../../retroshare-gui/src/temp/ui ../../libretroshare/src
 INCLUDEPATH += ../../retroshare-gui/src/temp/ui ../../libretroshare/src
 INCLUDEPATH += ../../retroshare-gui/src/retroshare-gui
 
+INCLUDEPATH += ../../rapidjson-1.1.0
+
 #################################### Windows #####################################
 
 linux-* {
