@@ -6,11 +6,6 @@
 class Tile: public QLabel
 {
 public:
-
-    //Fields
-    int tileColor,piece,pieceColor,row,col,tileNum;
-    char pieceName;
-
     //Constructors
 	Tile(QWidget* pParent=0, Qt::WindowFlags f=0);
 	Tile(const QString& text, QWidget* pParent = 0, Qt::WindowFlags f = 0);
@@ -18,11 +13,14 @@ public:
     //Methods
 protected:
     void mousePressEvent(QMouseEvent *event);
-
-private:
+public:
     void display(char elem);
     void tileDisplay();
     void validate(int c);
+
+    //Fields
+    int tileColor,piece,pieceColor,row,col,tileNum;
+    char pieceName;
 };
 
 void validate_tile(int row, int col, int c);
