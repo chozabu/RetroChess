@@ -1,12 +1,17 @@
 #include <QApplication>
+
 #include "chess.h"
+#include "ui_chess.h"
+
 #include "gui/common/AvatarDefs.h"
 
 RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *parent) :
-    QWidget(parent),
+	QWidget(parent),
+	m_ui( new Ui::RetroChessWindow() ),
     mPeerId(peerid)
     //ui(new Ui::RetroChessWindow)
 {
+	m_ui->setupUi( this );
 
     //tile = { { NULL } };
     count=0;
@@ -37,12 +42,13 @@ RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *pare
 
     this->setWindowTitle(title);
 
-    accessories();
-    chessBoard();
+	this->initAccessories();
+	this->initChessBoard();
 }
 
 RetroChessWindow::~RetroChessWindow()
 {
+	delete m_ui;
 }
 
 class Border
@@ -63,8 +69,20 @@ public:
     }
 };
 
-void RetroChessWindow::accessories()
+void RetroChessWindow::initAccessories()
 {
+	// display player's name
+	m_ui->m_player1_name->setText( p1name.c_str() );
+	m_ui->m_player2_name->setText( p2name.c_str() );
+
+	QPixmap p1avatar;
+	AvatarDefs::getAvatarFromSslId(p1id, p1avatar);
+	m_ui->m_player1_avatar->setPixmap(p1avatar);//QPixmap(":/images/profile.png"));
+
+	AvatarDefs::getAvatarFromSslId(p2id, p1avatar);
+	m_ui->m_player2_avatar->setPixmap(p1avatar);//QPixmap(":/images/profile.png"));
+
+	/*
     QWidget *baseWidget = this;
     QLabel *player2 = new QLabel(baseWidget);
     QLabel *name2 = new QLabel(p2name.c_str(), baseWidget);
@@ -78,7 +96,8 @@ void RetroChessWindow::accessories()
 
     name1->setGeometry(125,610,80,20);
     time1->setGeometry(120,635,80,20);
-    player1->setGeometry(100,500,100,100);
+	player1->setGeometry(100,500,100,100);
+
     QPixmap p1avatar;
     AvatarDefs::getAvatarFromSslId(p1id, p1avatar);
     player1->setPixmap(p1avatar);//QPixmap(":/images/profile.png"));
@@ -86,14 +105,14 @@ void RetroChessWindow::accessories()
 
     name2->setGeometry(125,210,80,20);
     time2->setGeometry(120,235,80,20);
-    player2->setGeometry(100,100,100,100);
+	player2->setGeometry(100,100,100,100);
     QPixmap p2avatar;
     AvatarDefs::getAvatarFromSslId(p2id, p2avatar);
     player2->setPixmap(p2avatar);//QPixmap(":/images/profile.png"));
 
     moves->setGeometry(1000,105,250,550);
     moves->setStyleSheet("QLabel {background-color: white;}");
-
+	*/
 }
 
 void RetroChessWindow::disOrange()
@@ -111,11 +130,12 @@ void RetroChessWindow::validate_tile(int row, int col, int c){
     clickedtile->validate(++count);
 }
 
-void RetroChessWindow::chessBoard()
+void RetroChessWindow::initChessBoard()
 {
     //QWidget *baseWidget, Tile *tile[8][8]
-    QWidget *baseWidget = this;
-    int i,j,k=0,hor,ver;
+	//QWidget *baseWidget = this;
+	QWidget *baseWidget = m_ui->m_chess_board;
+	int i,j,k=0,hor,ver;
     Border *border[4]={ NULL };
 
     //borderDisplay
@@ -199,8 +219,6 @@ void RetroChessWindow::chessBoard()
 
     bR=0;
     bC=4;
-
-
 }
 
 

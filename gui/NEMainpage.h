@@ -1,4 +1,11 @@
-/* This is the main page displayed by the plugin */
+/* This is the main page displayed by the plugin
+ *
+ * For:
+ * 	event handle
+ * 	peer check
+ *  game launching
+*/
+
 #ifndef NEMAINPAGE_H
 #define NEMAINPAGE_H
 

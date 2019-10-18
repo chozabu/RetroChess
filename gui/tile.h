@@ -12,11 +12,14 @@ public:
     char pieceName;
 
     //Constructors
-    Tile(QWidget* pParent=0, Qt::WindowFlags f=0) : QLabel(pParent, f) {};
-    Tile(const QString& text, QWidget* pParent = 0, Qt::WindowFlags f = 0) : QLabel(text, pParent, f){};
+	Tile(QWidget* pParent=0, Qt::WindowFlags f=0);
+	Tile(const QString& text, QWidget* pParent = 0, Qt::WindowFlags f = 0);
 
     //Methods
+protected:
     void mousePressEvent(QMouseEvent *event);
+
+private:
     void display(char elem);
     void tileDisplay();
     void validate(int c);

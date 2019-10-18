@@ -67,4 +67,5 @@ RESOURCES = gui/RetroChess_images.qrc
 #LIBS += -lspeex -lspeexdsp
 
 FORMS += \
-    gui/NEMainpage.ui
+    gui/NEMainpage.ui \
+    gui/chess.ui
