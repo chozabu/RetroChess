@@ -31,6 +31,9 @@
 #include <vector>
 #include <retroshare/rstypes.h>
 
+#include <QVariantMap>
+#include <QString>
+
 class RsRetroChess ;
 extern RsRetroChess *rsRetroChess;
  

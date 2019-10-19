@@ -1,12 +1,17 @@
 #include <QApplication>
+
 #include "chess.h"
+#include "ui_chess.h"
+
 #include "gui/common/AvatarDefs.h"
 
 RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *parent) :
     QWidget(parent),
+    m_ui( new Ui::RetroChessWindow() ),
     mPeerId(peerid)
     //ui(new Ui::RetroChessWindow)
 {
+    m_ui->setupUi( this );
 
     //tile = { { NULL } };
     count=0;
@@ -16,11 +21,14 @@ RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *pare
     setGeometry(0,0,1370,700);
 
     QString player_str;
-    if (player ){
+    if (player )
+    {
         p1id = rsPeers->getOwnId();
         p2id = RsPeerId(peerid);
         player_str = " (1)";
-    }else{
+    }
+    else
+    {
         p1id = RsPeerId(peerid);
         p2id = rsPeers->getOwnId();
         player_str = " (2)";
@@ -37,12 +45,13 @@ RetroChessWindow::RetroChessWindow(std::string peerid, int player, QWidget *pare
 
     this->setWindowTitle(title);
 
-    accessories();
-    chessBoard();
+    this->initAccessories();
+    this->initChessBoard();
 }
 
 RetroChessWindow::~RetroChessWindow()
 {
+    delete m_ui;
 }
 
 class Border
@@ -51,7 +60,7 @@ public:
     Border();
     void outline(QWidget *baseWidget, int xPos, int yPos, int Pos)
     {
-         QLabel *outLabel = new QLabel(baseWidget);
+        QLabel *outLabel = new QLabel(baseWidget);
 
         if(!Pos)
             outLabel->setGeometry(xPos,yPos,552,20);        //Horizontal Borders
@@ -63,8 +72,22 @@ public:
     }
 };
 
-void RetroChessWindow::accessories()
+void RetroChessWindow::initAccessories()
 {
+    // display player's name
+    m_ui->m_player1_name->setText( p1name.c_str() );
+    m_ui->m_player2_name->setText( p2name.c_str() );
+
+    QPixmap p1avatar;
+    AvatarDefs::getAvatarFromSslId(p1id, p1avatar);
+    m_ui->m_player1_avatar->setPixmap(p1avatar);//QPixmap(":/images/profile.png"));
+
+    AvatarDefs::getAvatarFromSslId(p2id, p1avatar);
+    m_ui->m_player2_avatar->setPixmap(p1avatar);//QPixmap(":/images/profile.png"));
+
+
+
+    /*
     QWidget *baseWidget = this;
     QLabel *player2 = new QLabel(baseWidget);
     QLabel *name2 = new QLabel(p2name.c_str(), baseWidget);
@@ -79,6 +102,7 @@ void RetroChessWindow::accessories()
     name1->setGeometry(125,610,80,20);
     time1->setGeometry(120,635,80,20);
     player1->setGeometry(100,500,100,100);
+
     QPixmap p1avatar;
     AvatarDefs::getAvatarFromSslId(p1id, p1avatar);
     player1->setPixmap(p1avatar);//QPixmap(":/images/profile.png"));
@@ -93,47 +117,55 @@ void RetroChessWindow::accessories()
 
     moves->setGeometry(1000,105,250,550);
     moves->setStyleSheet("QLabel {background-color: white;}");
+    */
 
+    m_ui->m_move_record->setStyleSheet("QLabel {background-color: white;}");
 }
 
 void RetroChessWindow::disOrange()
 {
     int i;
 
-    for(i=0;i<max;i++)
+    for(i=0; i<max; i++)
         tile[texp[i]/8][texp[i]%8]->tileDisplay();
 
 }
 
-void RetroChessWindow::validate_tile(int row, int col, int c){
+void RetroChessWindow::validate_tile(int row, int col, int c)
+{
     Tile *clickedtile = tile[col][row];
     //if (!click1)click1=clickedtile;
     clickedtile->validate(++count);
 }
 
-void RetroChessWindow::chessBoard()
+void RetroChessWindow::initChessBoard()
 {
     //QWidget *baseWidget, Tile *tile[8][8]
-    QWidget *baseWidget = this;
+    //QWidget *baseWidget = this;
+    QWidget *baseWidget = m_ui->m_chess_board;
     int i,j,k=0,hor,ver;
-    Border *border[4]={ NULL };
+    Border *border[4] = { NULL };
 
-    //borderDisplay
+    //borderDisplay (border size: 552 * 552)
     {
-    border[0]->outline(baseWidget,330,105,0);
-    border[1]->outline(baseWidget,330,637,0);
-    border[2]->outline(baseWidget,330,125,1);
-    border[2]->outline(baseWidget,862,125,1);
+        border[0]->outline( baseWidget,	0,		0,		0);
+        border[1]->outline( baseWidget,	0,		532,	0);
+        border[2]->outline( baseWidget,	0,		20,		1);
+        border[2]->outline( baseWidget,	532,	20,		1);
     }
 
     //Create 64 tiles (allocating memories to the objects of Tile class)
-    ver=125;
-    for(i=0;i<8;i++)
+    //ver=125;
+    ver = 20;
+
+    for(i=0; i<8; i++)
     {
-        hor=350;
-        for(j=0;j<8;j++)
+        //hor=350;
+        hor = 20;
+        for(j=0; j<8; j++)
         {
             tile[i][j] = new Tile(baseWidget);
+            tile[i][j]->setChessWindow( this );
             tile[i][j]->tileColor=(i+j)%2;
             tile[i][j]->piece=0;
             tile[i][j]->row=i;
@@ -141,13 +173,15 @@ void RetroChessWindow::chessBoard()
             tile[i][j]->tileNum=k++;
             tile[i][j]->tileDisplay();
             tile[i][j]->setGeometry(hor,ver,64,64);
+            tile[i][j]->resize( 64, 64 );
+
             hor+=64;
         }
         ver+=64;
     }
 
     //white pawns
-    for(j=0;j<8;j++)
+    for(j=0; j<8; j++)
     {
         tile[1][j]->piece=1;
         tile[1][j]->pieceColor=0;
@@ -155,7 +189,7 @@ void RetroChessWindow::chessBoard()
     }
 
     //black pawns
-    for(j=0;j<8;j++)
+    for(j=0; j<8; j++)
     {
         tile[6][j]->piece=1;
         tile[6][j]->pieceColor=1;
@@ -163,7 +197,7 @@ void RetroChessWindow::chessBoard()
     }
 
     //white and black remaining elements
-    for(j=0;j<8;j++)
+    for(j=0; j<8; j++)
     {
         tile[0][j]->piece=1;
         tile[0][j]->pieceColor=0;
@@ -172,26 +206,26 @@ void RetroChessWindow::chessBoard()
     }
 
     {
-    tile[0][0]->display('R');
-    tile[0][1]->display('H');
-    tile[0][2]->display('B');
-    tile[0][3]->display('Q');
-    tile[0][4]->display('K');
-    tile[0][5]->display('B');
-    tile[0][6]->display('H');
-    tile[0][7]->display('R');
+        tile[0][0]->display('R');
+        tile[0][1]->display('H');
+        tile[0][2]->display('B');
+        tile[0][3]->display('Q');
+        tile[0][4]->display('K');
+        tile[0][5]->display('B');
+        tile[0][6]->display('H');
+        tile[0][7]->display('R');
     }
 
 
     {
-    tile[7][0]->display('R');
-    tile[7][1]->display('H');
-    tile[7][2]->display('B');
-    tile[7][3]->display('Q');
-    tile[7][4]->display('K');
-    tile[7][5]->display('B');
-    tile[7][6]->display('H');
-    tile[7][7]->display('R');
+        tile[7][0]->display('R');
+        tile[7][1]->display('H');
+        tile[7][2]->display('B');
+        tile[7][3]->display('Q');
+        tile[7][4]->display('K');
+        tile[7][5]->display('B');
+        tile[7][6]->display('H');
+        tile[7][7]->display('R');
     }
 
     wR=7;
@@ -199,8 +233,6 @@ void RetroChessWindow::chessBoard()
 
     bR=0;
     bC=4;
-
-
 }
 
 
@@ -209,23 +241,29 @@ int RetroChessWindow::chooser(Tile *temp)
 {
     switch(temp->pieceName)
     {
-    case 'P': flag=validatePawn(temp);
-              break;
+    case 'P':
+        flag=validatePawn(temp);
+        break;
 
-    case 'R': flag=validateRook(temp);
-              break;
+    case 'R':
+        flag=validateRook(temp);
+        break;
 
-    case 'H': flag=validateHorse(temp);
-              break;
+    case 'H':
+        flag=validateHorse(temp);
+        break;
 
-    case 'K': flag=validateKing(temp);
-              break;
+    case 'K':
+        flag=validateKing(temp);
+        break;
 
-    case 'Q': flag=validateQueen(temp);
-              break;
+    case 'Q':
+        flag=validateQueen(temp);
+        break;
 
-    case 'B': flag=validateBishop(temp);
-              break;
+    case 'B':
+        flag=validateBishop(temp);
+        break;
 
     }
 
@@ -267,8 +305,8 @@ int RetroChessWindow::validatePawn(Tile *temp)
         {
             if(tile[row-1][col-1]->pieceColor!=temp->pieceColor && tile[row-1][col-1]->piece)
             {
-            texp[max++]=tile[row-1][col-1]->tileNum;
-            retVal=1;
+                texp[max++]=tile[row-1][col-1]->tileNum;
+                retVal=1;
             }
         }
 
@@ -868,6 +906,6 @@ void RetroChessWindow::orange()
 {
     int i,n;
 
-    for(i=0;i<max;i++)
+    for(i=0; i<max; i++)
         tile[texp[i]/8][texp[i]%8]->setStyleSheet("QLabel {background-color: orange;}");
 }

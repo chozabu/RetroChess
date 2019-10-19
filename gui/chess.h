@@ -1,22 +1,32 @@
 #ifndef CHESS_H
 #define CHESS_H
 
-//#include "tile.h"
+#include "tile.h"
 #include "validation.h"
-#include "qwidget.h"
+
+#include <QWidget>
 
 #include "retroshare/rspeers.h"
+
+namespace Ui
+{
+	class RetroChessWindow;
+};
 
 class RetroChessWindow : public QWidget
 {
     Q_OBJECT
 
-    void accessories();
-    void chessBoard();
+private:
+	Ui::RetroChessWindow *m_ui;	//ui
+
+	void initAccessories();
+	void initChessBoard();
     RsPeerId p1id;
     RsPeerId p2id;
     std::string p1name;
     std::string p2name;
+
 public:
     std::string mPeerId;
     explicit RetroChessWindow(std::string peerid, int player = 0, QWidget *parent = 0);
@@ -47,11 +57,11 @@ public:
     int validateHorse(Tile *temp);
     int validateRook(Tile *temp);
     int validatePawn(Tile *temp);
-    void orange();
+	void orange();	// draw orange background represent avaiable movement of tiles
     int check(Tile *temp);
 };
 
 
-QWidget* make_board();
+extern QWidget* make_board();
 
 #endif // CHESS_H

@@ -163,6 +163,7 @@ QIcon *RetroChessPlugin::qt_icon() const
 }
 MainPage *RetroChessPlugin::qt_page() const
 {
+	// return chess game's main page here(which used for display)
 	if(mainpage == NULL){
 		mainpage = new NEMainpage(0, mRetroChessNotify);//mPeers, mFiles) ;
 		//tpage = new NEMainpage( );
