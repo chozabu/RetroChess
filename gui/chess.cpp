@@ -141,32 +141,31 @@ void RetroChessWindow::validate_tile(int row, int col, int c)
 void RetroChessWindow::initChessBoard()
 {
     //QWidget *baseWidget, Tile *tile[8][8]
-    QWidget *baseWidget = this;
-    //QWidget *baseWidget = m_ui->m_chess_board;
+    //QWidget *baseWidget = this;
+    QWidget *baseWidget = m_ui->m_chess_board;
     int i,j,k=0,hor,ver;
-    Border *border[4]= { NULL };
+    Border *border[4] = { NULL };
 
-    //borderDisplay
+    //borderDisplay (border size: 552 * 552)
     {
-        //border[0]->outline(baseWidget,330,105,0);
-        //border[1]->outline(baseWidget,330,637,0);
-        //border[2]->outline(baseWidget,330,125,1);
-        //border[2]->outline(baseWidget,862,125,1);
-
-        border[0]->outline(baseWidget,330,105,0);
-        border[1]->outline(baseWidget,330,637,0);
-        border[2]->outline(baseWidget,330,125,1);
-        border[2]->outline(baseWidget,862,125,1);
+        border[0]->outline( baseWidget,	0,		0,		0);
+        border[1]->outline( baseWidget,	0,		532,	0);
+        border[2]->outline( baseWidget,	0,		20,		1);
+        border[2]->outline( baseWidget,	532,	20,		1);
     }
 
     //Create 64 tiles (allocating memories to the objects of Tile class)
-    ver=125;
+    //ver=125;
+    ver = 20;
+
     for(i=0; i<8; i++)
     {
-        hor=350;
+        //hor=350;
+        hor = 20;
         for(j=0; j<8; j++)
         {
             tile[i][j] = new Tile(baseWidget);
+            tile[i][j]->setChessWindow( this );
             tile[i][j]->tileColor=(i+j)%2;
             tile[i][j]->piece=0;
             tile[i][j]->row=i;
@@ -174,6 +173,8 @@ void RetroChessWindow::initChessBoard()
             tile[i][j]->tileNum=k++;
             tile[i][j]->tileDisplay();
             tile[i][j]->setGeometry(hor,ver,64,64);
+            tile[i][j]->resize( 64, 64 );
+
             hor+=64;
         }
         ver+=64;
